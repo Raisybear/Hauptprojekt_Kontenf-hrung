@@ -1,11 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="script.js" defer></script>
-  </head>
-  <body></body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontenführung Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Kontenführung Dashboard</h1>
+      <nav>
+        <button onclick="showSection('dashboard')">Dashboard</button>
+        <button onclick="showSection('accounts')">Konten</button>
+        <button onclick="showSection('transactions')">Buchungen</button>
+        <button onclick="showSection('reports')">Berichte</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="dashboard" class="active">
+        <h2>Übersicht</h2>
+        <div id="account-overview">
+          <p>Konto: Sparkonto</p>
+          <p>Saldo: 5.000 €</p>
+        </div>
+        <div id="recent-transactions">
+          <h3>Letzte Buchungen</h3>
+          <ul>
+            <li>+100 € - Gehalt</li>
+            <li>-50 € - Einkauf</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="accounts">
+        <h2>Konten</h2>
+        <ul id="account-list">
+          <li>Sparkonto: 5.000 €</li>
+          <li>Girokonto: 1.200 €</li>
+        </ul>
+        <button onclick="addAccount()">Neues Konto erstellen</button>
+      </section>
+
+      <section id="transactions">
+        <h2>Buchungen</h2>
+        <form id="transaction-form">
+          <label>
+            Betrag:
+            <input type="number" id="amount" required>
+          </label>
+          <label>
+            Kommentar:
+            <input type="text" id="comment" required>
+          </label>
+          <button type="submit">Buchen</button>
+        </form>
+        <div id="transaction-list">
+          <h3>Alle Buchungen</h3>
+          <ul>
+            <li>+100 € - Gehalt</li>
+            <li>-50 € - Einkauf</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="reports">
+        <h2>Berichte</h2>
+        <p>Buchungshistorie und Analyse</p>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
 </html>
