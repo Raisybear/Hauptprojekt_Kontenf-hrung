@@ -1,3 +1,5 @@
+using SmartFlow_Backend.Models;
+
 namespace SmartFlow_Backend
 {
     public class Program

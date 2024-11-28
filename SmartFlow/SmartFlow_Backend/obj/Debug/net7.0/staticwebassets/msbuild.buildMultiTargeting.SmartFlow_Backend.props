@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SmartFlow_Backend.props" />
+</Project>
