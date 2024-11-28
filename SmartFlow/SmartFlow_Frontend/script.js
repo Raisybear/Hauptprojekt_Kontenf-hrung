@@ -74,3 +74,24 @@ document.getElementById("transaction-form").addEventListener("submit", function 
 
   document.getElementById("transaction-form").reset();
 });
+
+async function fetchAccounts() {
+  const response = await fetch('/api/accounts'); // API Endpoint
+  const accounts = await response.json();
+  renderAccounts(accounts);
+}
+
+function renderAccounts(accounts) {
+  const accountList = document.getElementById("account-list");
+  accountList.innerHTML = ""; // Clear the current list
+  accounts.forEach(account => {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+      ${account.name}: ${account.balance} €
+      <button class="edit-btn" data-id="${account.id}">Bearbeiten</button>
+    `;
+    listItem.querySelector(".edit-btn").addEventListener("click", () => enableEdit(account));
+    accountList.appendChild(listItem);
+  });
+}
+
