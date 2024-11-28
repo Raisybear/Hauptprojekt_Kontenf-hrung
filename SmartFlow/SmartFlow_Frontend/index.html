@@ -24,6 +24,7 @@
         <div id="account-overview">
           <p>Konto: Sparkonto</p>
           <p>Saldo: 5.000 €</p>
+          <button class="editButton">Bearbeiten</button>
         </div>
         <div id="recent-transactions">
           <h3>Letzte Buchungen</h3>
@@ -37,11 +38,18 @@
       <section id="accounts">
         <h2>Konten</h2>
         <ul id="account-list">
-          <li>Sparkonto: 5.000 €</li>
-          <li>Girokonto: 1.200 €</li>
+          <li>
+            Sparkonto: 5.000 €
+            <button class="edit-btn">Bearbeiten</button>
+          </li>
+          <li>
+            Girokonto: 1.200 €
+            <button class="edit-btn">Bearbeiten</button>
+          </li>
         </ul>
         <button onclick="addAccount()">Neues Konto erstellen</button>
       </section>
+      
 
       <section id="transactions">
         <h2>Buchungen</h2>

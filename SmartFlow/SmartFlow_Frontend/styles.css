@@ -70,3 +70,29 @@ form input {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+
+#account-list li:hover {
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
+
+#account-list input {
+  margin-right: 0.5rem;
+  padding: 0.2rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+#account-list button {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+#account-list button:hover {
+  background-color: #0056b3;
+}
