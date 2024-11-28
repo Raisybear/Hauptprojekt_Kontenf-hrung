@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SmartFlow_Backend.Models;
+using SmartFlow_Backend.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -11,39 +12,52 @@ namespace SmartFlow_Backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
         private readonly IConfiguration _configuration;
+        private readonly UserRepository _userRepository;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, UserRepository userRepository)
         {
             _configuration = configuration;
+            _userRepository = userRepository;
         }
 
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request)
+        public async Task<ActionResult<User>> Register(UserDto request)
         {
-            string passwordHash 
-                = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            // Überprüfen, ob Benutzer bereits existiert
+            var existingUser = await _userRepository.GetUserByUsernameAsync(request.Username);
+            if (existingUser != null)
+            {
+                return BadRequest("User already exists.");
+            }
 
-            user.Username = request.Username;
-            user.PasswordHash = passwordHash;
+            // Passwort-Hash generieren
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-            return Ok(user);
+            // Neuen Benutzer erstellen
+            var newUser = new User
+            {
+                Username = request.Username,
+                PasswordHash = passwordHash
+            };
+
+            // Benutzer speichern
+            await _userRepository.CreateUserAsync(newUser);
+
+            return Ok(newUser);
         }
 
         [HttpPost("login")]
-        public ActionResult<User> Login(UserDto request)
+        public async Task<ActionResult<string>> Login(UserDto request)
         {
-            if (user.Username != request.Username)
+            // Benutzer anhand des Benutzernamens finden
+            var user = await _userRepository.GetUserByUsernameAsync(request.Username);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 return BadRequest("User or Password incorrect.");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            {
-                return BadRequest("User or Password incorrect.");
-            }
-
+            // JWT-Token generieren
             string token = GenerateJwtToken(user);
 
             return Ok(token);
@@ -51,24 +65,25 @@ namespace SmartFlow_Backend.Controllers
 
         private string GenerateJwtToken(User user)
         {
-            List<Claim> claims = new List<Claim>{
+            // Ansprüche für den Token definieren
+            List<Claim> claims = new List<Claim>
+            {
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
+            // Schlüssel aus der Konfiguration abrufen
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("Appsettings:Token").Value!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds
-                );
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
 
-            var JwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return JwtToken;
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
