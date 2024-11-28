@@ -1,4 +1,5 @@
 using SmartFlow_Backend.Models;
+using SmartFlow_Backend.Repositories;
 
 namespace SmartFlow_Backend
 {
@@ -9,6 +10,8 @@ namespace SmartFlow_Backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddSingleton<UserRepository>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

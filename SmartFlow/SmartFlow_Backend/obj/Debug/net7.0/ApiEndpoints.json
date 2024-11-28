@@ -15,7 +15,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "SmartFlow_Backend.Models.User",
+        "Type": "System.String",
         "MediaTypes": [
           "text/plain",
           "application/json",

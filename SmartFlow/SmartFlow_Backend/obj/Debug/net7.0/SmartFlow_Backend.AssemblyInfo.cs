@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartFlow_Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ef3e0d17d808926d3988e6837d7d0be38289963")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c36a1b73828a5dfeceab8557c761ab3976702ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartFlow_Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartFlow_Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

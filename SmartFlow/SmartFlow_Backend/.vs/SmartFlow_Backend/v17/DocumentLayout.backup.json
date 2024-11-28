@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|c:\\users\\robin\\source\\repos\\hauptprojekt_kontenfuehrung\\smartflow\\smartflow_backend\\models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A77065-330C-4186-A132-E0F15F845762}|SmartFlow_Backend.csproj|solutionrelative:models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -47,12 +55,38 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAQwA0AAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-28T07:56:30.891Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-28T07:54:33.645Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-11-28T07:01:04.876Z",
               "EditorCaption": ""
@@ -63,37 +97,38 @@
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAADUAAAAAAAAAAIAwwEQAAAAMAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Controllers\\AuthController.cs \u2B24",
+              "RelativeToolTip": "Controllers\\AuthController.cs \u2B24",
+              "ViewState": "AgIAADAAAAAAAAAAAAAowFkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-28T06:43:28.174Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "UserDto.cs",
               "DocumentMoniker": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Models\\UserDto.cs",
               "RelativeDocumentMoniker": "Models\\UserDto.cs",
               "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Models\\UserDto.cs",
               "RelativeToolTip": "Models\\UserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-28T06:41:10.424Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
               "ToolTip": "C:\\Users\\robin\\source\\repos\\Hauptprojekt_Kontenfuehrung\\SmartFlow\\SmartFlow_Backend\\Models\\User.cs",
               "RelativeToolTip": "Models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-28T06:39:35.205Z"
+              "WhenOpened": "2024-11-28T06:39:35.205Z",
+              "EditorCaption": ""
             }
           ]
         }
