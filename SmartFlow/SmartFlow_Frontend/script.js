@@ -23,24 +23,63 @@ function enableEdit(event) {
   const currentText = listItem.childNodes[0].nodeValue.trim(); 
   const [name, balance] = currentText.split(":").map(item => item.trim().replace("€", ""));
 
-  listItem.innerHTML = `
-    <input type="text" class="edit-name" value="${name}" />
-    <input type="number" class="edit-balance" value="${balance}" />
-    <button class="save-btn">Speichern</button>
-  `;
+  while (listItem.firstChild) {
+    listItem.removeChild(listItem.firstChild);
+  }
+  const nameInput = document.createElement("input");
+  nameInput.type = "text";
+  nameInput.className = "edit-name";
+  nameInput.value = name;
 
-  listItem.querySelector(".save-btn").addEventListener("click", saveEdit);
+  const balanceInput = document.createElement("input");
+  balanceInput.type = "number";
+  balanceInput.className = "edit-balance";
+  balanceInput.value = balance;
+
+  // Speichern-Button erstellen
+  const saveButton = document.createElement("button");
+  saveButton.className = "save-btn";
+  saveButton.textContent = "Speichern";
+
+  // Eventlistener für Speichern
+  saveButton.addEventListener("click", saveEdit);
+
+  // Elemente hinzufügen
+  listItem.appendChild(nameInput);
+  listItem.appendChild(balanceInput);
+  listItem.appendChild(saveButton);
 }
+  
+
+
 
 function saveEdit(event) {
   const listItem = event.target.closest("li");
   const newName = listItem.querySelector(".edit-name").value;
   const newBalance = listItem.querySelector(".edit-balance").value;
 
-  listItem.innerHTML = `
-    ${newName}: ${newBalance} €
-    <button class="edit-btn">Bearbeiten</button>
-  `;
+  if (!newName || isNaN(newBalance)) {
+    alert("Bitte gültige Werte eingeben!");
+    return;
+  }
+
+  // Liste leeren
+  while (listItem.firstChild) {
+    listItem.removeChild(listItem.firstChild);
+  }
+
+  const textNode = document.createTextNode(`${newName}: ${newBalance} €`);
+
+  const editButton = document.createElement("button");
+  editButton.className = "edit-btn";
+  editButton.textContent = "Bearbeiten";
+
+  // Eventlistener für Bearbeiten
+  editButton.addEventListener("click", enableEdit);
+
+  // Elemente hinzufügen
+  listItem.appendChild(textNode);
+  listItem.appendChild(editButton);
 
   listItem.querySelector(".edit-btn").addEventListener("click", enableEdit);
 }
