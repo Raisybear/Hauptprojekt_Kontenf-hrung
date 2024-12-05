@@ -1,84 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kontenführung Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div id="app">
-    <header>
-      <h1>Kontenführung Dashboard</h1>
-      <nav>
-        <button onclick="showSection('dashboard')">Dashboard</button>
-        <button onclick="showSection('accounts')">Konten</button>
-        <button onclick="showSection('transactions')">Buchungen</button>
-        <button onclick="showSection('reports')">Berichte</button>
-      </nav>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kontenführung Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Kontenführung Dashboard</h1>
+        <nav id="menu-bar" style="display: none">
+          <button onclick="showSection('dashboard')">Dashboard</button>
+          <button onclick="showSection('accounts')">Konten</button>
+          <button onclick="showSection('transactions')">Buchungen</button>
+          <button onclick="showSection('reports')">Berichte</button>
+        </nav>
+      </header>
 
-    <main>
-      <section id="dashboard" class="active">
-        <h2>Übersicht</h2>
-        <div id="account-overview">
-          <p>Konto: Sparkonto</p>
-          <p>Saldo: 5.000 €</p>
-          <button class="editButton">Bearbeiten</button>
-        </div>
-        <div id="recent-transactions">
-          <h3>Letzte Buchungen</h3>
-          <ul>
-            <li>+100 € - Gehalt</li>
-            <li>-50 € - Einkauf</li>
+      <main>
+        <section id="login">
+          <h2>Login</h2>
+          <form id="login-form">
+            <label for="username">Benutzername:</label>
+            <input type="text" id="username" required />
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" required />
+            <button type="submit">Einloggen</button>
+          </form>
+          <div id="login-message"></div>
+          <p>Noch kein Konto? <button id="to-register">Registrieren</button></p>
+        </section>
+
+        <section id="register">
+          <h2>Registrieren</h2>
+          <form id="register-form">
+            <label for="register-username">Benutzername:</label>
+            <input type="text" id="register-username" required />
+            <label for="register-password">Passwort:</label>
+            <input type="password" id="register-password" required />
+            <button type="submit">Registrieren</button>
+          </form>
+          <div id="register-message"></div>
+          <p>Bereits ein Konto? <button id="to-login">Einloggen</button></p>
+        </section>
+
+        <section id="dashboard" class="active">
+          <h2>Übersicht</h2>
+          <div id="account-overview">
+            <p>Konto: Sparkonto</p>
+            <p>Saldo: 5.000 €</p>
+            <button class="editButton">Bearbeiten</button>
+          </div>
+          <div id="recent-transactions">
+            <h3>Letzte Buchungen</h3>
+            <ul>
+              <li>+100 € - Gehalt</li>
+              <li>-50 € - Einkauf</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="accounts">
+          <h2>Konten</h2>
+          <ul id="account-list">
+            <li>
+              Sparkonto: 5.000 €
+              <button class="edit-btn">Bearbeiten</button>
+            </li>
+            <li>
+              Girokonto: 1.200 €
+              <button class="edit-btn">Bearbeiten</button>
+            </li>
           </ul>
-        </div>
-      </section>
+          <button onclick="addAccount()">Neues Konto erstellen</button>
+        </section>
 
-      <section id="accounts">
-        <h2>Konten</h2>
-        <ul id="account-list">
-          <li>
-            Sparkonto: 5.000 €
-            <button class="edit-btn">Bearbeiten</button>
-          </li>
-          <li>
-            Girokonto: 1.200 €
-            <button class="edit-btn">Bearbeiten</button>
-          </li>
-        </ul>
-        <button onclick="addAccount()">Neues Konto erstellen</button>
-      </section>
-      
+        <section id="transactions">
+          <h2>Buchungen</h2>
+          <form id="transaction-form">
+            <label>
+              Betrag:
+              <input type="number" id="amount" required />
+            </label>
+            <label>
+              Kommentar:
+              <input type="text" id="comment" required />
+            </label>
+            <button type="submit">Buchen</button>
+          </form>
+          <div id="transaction-list">
+            <h3>Alle Buchungen</h3>
+            <ul>
+              <li>+100 € - Gehalt</li>
+              <li>-50 € - Einkauf</li>
+            </ul>
+          </div>
+        </section>
 
-      <section id="transactions">
-        <h2>Buchungen</h2>
-        <form id="transaction-form">
-          <label>
-            Betrag:
-            <input type="number" id="amount" required>
-          </label>
-          <label>
-            Kommentar:
-            <input type="text" id="comment" required>
-          </label>
-          <button type="submit">Buchen</button>
-        </form>
-        <div id="transaction-list">
-          <h3>Alle Buchungen</h3>
-          <ul>
-            <li>+100 € - Gehalt</li>
-            <li>-50 € - Einkauf</li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="reports">
-        <h2>Berichte</h2>
-        <p>Buchungshistorie und Analyse</p>
-      </section>
-    </main>
-  </div>
-  <script src="script.js"></script>
-</body>
+        <section id="reports">
+          <h2>Berichte</h2>
+          <p>Buchungshistorie und Analyse</p>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+    <script src="register.js"></script>
+  </body>
 </html>

@@ -13,6 +13,16 @@ namespace SmartFlow_Backend
 
             builder.Services.AddSingleton<UserRepository>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin() 
+                        .AllowAnyHeader() 
+                        .AllowAnyMethod(); 
+                });
+            });
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -29,8 +39,9 @@ namespace SmartFlow_Backend
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("AllowAll");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
