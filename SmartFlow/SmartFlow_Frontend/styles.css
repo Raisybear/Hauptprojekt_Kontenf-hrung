@@ -96,3 +96,12 @@ form input {
 #account-list button:hover {
   background-color: #0056b3;
 }
+
+#login-message {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+#login input {
+  margin-bottom: 1rem;
+}

@@ -1,11 +1,13 @@
-// Toggle between sections
 function showSection(sectionId) {
   const sections = document.querySelectorAll("main > section");
-  sections.forEach(section => section.classList.remove("active"));
+  sections.forEach((section) => section.classList.remove("active"));
   document.getElementById(sectionId).classList.add("active");
 }
 
-// Add a new account
+document.addEventListener("DOMContentLoaded", () => {
+  showSection("login");
+});
+
 function addAccount() {
   const accountList = document.getElementById("account-list");
   const newAccount = document.createElement("li");
@@ -20,8 +22,10 @@ function addAccount() {
 
 function enableEdit(event) {
   const listItem = event.target.closest("li");
-  const currentText = listItem.childNodes[0].nodeValue.trim(); 
-  const [name, balance] = currentText.split(":").map(item => item.trim().replace("€", ""));
+  const currentText = listItem.childNodes[0].nodeValue.trim();
+  const [name, balance] = currentText
+    .split(":")
+    .map((item) => item.trim().replace("€", ""));
 
   listItem.innerHTML = `
     <input type="text" class="edit-name" value="${name}" />
@@ -45,53 +49,58 @@ function saveEdit(event) {
   listItem.querySelector(".edit-btn").addEventListener("click", enableEdit);
 }
 
-document.querySelectorAll("#account-list .edit-btn").forEach(button => {
+document.querySelectorAll("#account-list .edit-btn").forEach((button) => {
   button.addEventListener("click", enableEdit);
 });
 
 function editAccount(event) {
   const account = event.target;
   const accountDetails = account.textContent.split(":");
-  const NewName = prompt("Kontoname bearbeiten: ", accountDetails[0]) || accountDetails[0];
+  const newName =
+    prompt("Kontoname bearbeiten: ", accountDetails[0]) || accountDetails[0];
   account.textContent = `${newName}:`;
   account.addEventListener("click", editAccount);
-  document.querySelectorAll("#account-list li").forEach(account => {
+  document.querySelectorAll("#account-list li").forEach((account) => {
     account.addEventListener("click", editAccount);
   });
 }
 
-// Handle new transactions
-document.getElementById("transaction-form").addEventListener("submit", function (event) {
-  event.preventDefault();
-  
-  const amount = document.getElementById("amount").value;
-  const comment = document.getElementById("comment").value;
+document
+  .getElementById("transaction-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  const transactionList = document.querySelector("#transaction-list ul");
-  const newTransaction = document.createElement("li");
-  newTransaction.textContent = `${amount > 0 ? "+" : ""}${amount} € - ${comment}`;
-  transactionList.appendChild(newTransaction);
+    const amount = document.getElementById("amount").value;
+    const comment = document.getElementById("comment").value;
 
-  document.getElementById("transaction-form").reset();
-});
+    const transactionList = document.querySelector("#transaction-list ul");
+    const newTransaction = document.createElement("li");
+    newTransaction.textContent = `${
+      amount > 0 ? "+" : ""
+    }${amount} € - ${comment}`;
+    transactionList.appendChild(newTransaction);
+
+    document.getElementById("transaction-form").reset();
+  });
 
 async function fetchAccounts() {
-  const response = await fetch('/api/accounts'); // API Endpoint
+  const response = await fetch("/api/accounts");
   const accounts = await response.json();
   renderAccounts(accounts);
 }
 
 function renderAccounts(accounts) {
   const accountList = document.getElementById("account-list");
-  accountList.innerHTML = ""; // Clear the current list
-  accounts.forEach(account => {
+  accountList.innerHTML = "";
+  accounts.forEach((account) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = `
       ${account.name}: ${account.balance} €
       <button class="edit-btn" data-id="${account.id}">Bearbeiten</button>
     `;
-    listItem.querySelector(".edit-btn").addEventListener("click", () => enableEdit(account));
+    listItem
+      .querySelector(".edit-btn")
+      .addEventListener("click", () => enableEdit(account));
     accountList.appendChild(listItem);
   });
 }
-
