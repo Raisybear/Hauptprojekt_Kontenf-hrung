@@ -11,12 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function addAccount() {
   const accountList = document.getElementById("account-list");
   const newAccount = document.createElement("li");
-  newAccount.innerHTML = `
-    Neues Konto: 0 €
-    <button class="edit-btn">Bearbeiten</button>
-  `;
+  const accountText = document.getElementById("Neues Konto: 0€");
+  newAccount.appendChild(accountText);
 
-  newAccount.querySelector(".edit-btn").addEventListener("click", enableEdit);
+  const editButton = document.createElement("button");
+  editButton.className = "edit-btn";
+  editButton.textContent = "Bearbeiten";
+  editButton.addEventListener("click", enableEdit);
+  newAccount.appendChild(editButton);
   accountList.appendChild(newAccount);
 }
 
@@ -132,14 +134,20 @@ function renderAccounts(accounts) {
   const accountList = document.getElementById("account-list");
   accountList.innerHTML = "";
   accounts.forEach((account) => {
-    const listItem = document.createElement("li");
-    listItem.innerHTML = `
-      ${account.name}: ${account.balance} €
-      <button class="edit-btn" data-id="${account.id}">Bearbeiten</button>
-    `;
-    listItem
-      .querySelector(".edit-btn")
-      .addEventListener("click", () => enableEdit(account));
-    accountList.appendChild(listItem);
+     const listItem = document.createElement("li");
+
+     const accountText = document.createTextNode(`${account.name}: ${account.balance} €`);
+    listItem.appendChild(accountText);
+
+     const editButton = document.createElement("button");
+    editButton.className = "edit-btn";
+    editButton.textContent = "Bearbeiten";
+    editButton.dataset.id = account.id;
+
+     editButton.addEventListener("click", () => enableEdit(account));
+
+     listItem.appendChild(editButton);
+
+     accountList.appendChild(listItem);
   });
 }
