@@ -12,6 +12,7 @@ namespace SmartFlow_Backend
             // Add services to the container.
 
             builder.Services.AddSingleton<UserRepository>();
+            builder.Services.AddSingleton<KontoRepository>();
 
             builder.Services.AddCors(options =>
             {

@@ -17,13 +17,11 @@ namespace SmartFlow_Backend.Repositories
             _usersCollection = database.GetCollection<User>("Users");
         }
 
-        // Benutzer erstellen
         public async Task CreateUserAsync(User user)
         {
             await _usersCollection.InsertOneAsync(user);
         }
 
-        // Benutzer anhand des Benutzernamens finden
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
             return await _usersCollection.Find(u => u.Username == username).FirstOrDefaultAsync();
