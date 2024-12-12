@@ -11,9 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function addAccount() {
   const accountList = document.getElementById("account-list");
   const newAccount = document.createElement("li");
-  const accountText = document.getElementById("Neues Konto: 0€");
+  const accountText = document.createTextNode("Neues Konto: 0€");
   newAccount.appendChild(accountText);
-
   const editButton = document.createElement("button");
   editButton.className = "edit-btn";
   editButton.textContent = "Bearbeiten";
