@@ -1,0 +1,14 @@
+bin/
+
+obj/
+
+*.user
+*.lock.json
+*.pdb
+*.log
+*.vs/
+.vscode/
+*.suo
+*.tmp
+*.ide
+*.cache
