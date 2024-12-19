@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SmartFlow_Backend.Models;
 using SmartFlow_Backend.Repositories;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartFlow_Backend.Controllers
@@ -17,13 +20,6 @@ namespace SmartFlow_Backend.Controllers
             _kontoRepository = kontoRepository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Konto>>> Get()
-        {
-            var konten = await _kontoRepository.GetAllKontenAsync();
-            return Ok(konten);
-        }
-
         [HttpGet("{id}", Name = "GetKonto")]
         public async Task<ActionResult<Konto>> Get(string id)
         {
@@ -36,14 +32,56 @@ namespace SmartFlow_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Konto>> Create(Konto konto)
+        public async Task<ActionResult<Konto>> Create([FromBody] KontoDto kontoDto)
         {
-            // Leere ID, damit MongoDB eine neue generiert
-            konto.Id = null;
+            if (string.IsNullOrEmpty(kontoDto.Token))
+            {
+                return Unauthorized("Token fehlt in der Anfrage.");
+            }
 
-            await _kontoRepository.CreateKontoAsync(konto);
-            return CreatedAtRoute("GetKonto", new { id = konto.Id }, konto);
+            try
+            {
+                // Token entschlüsseln
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes("my top secret key which was too short at the begining so now it ist hopefully long enough");
+
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+
+                // Token validieren
+                var principal = tokenHandler.ValidateToken(kontoDto.Token, validationParameters, out SecurityToken validatedToken);
+
+                // UserId aus dem Token extrahieren
+                var userId = principal.FindFirst("UserId")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("UserId konnte nicht aus dem Token extrahiert werden.");
+                }
+
+                // Konto erstellen
+                var konto = new Konto
+                {
+                    Name = kontoDto.Name,
+                    Geldbetrag = kontoDto.Geldbetrag,
+                    BesitzerId = userId
+                };
+
+                await _kontoRepository.CreateKontoAsync(konto);
+
+                return CreatedAtRoute("GetKonto", new { id = konto.Id }, konto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Token-Validierung fehlgeschlagen: {ex.Message}");
+                return Unauthorized("Ungültiger Token.");
+            }
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, Konto kontoIn)
@@ -54,7 +92,7 @@ namespace SmartFlow_Backend.Controllers
                 return NotFound();
             }
 
-            kontoIn.Id = id; // Sicherstellen, dass die ID gleich bleibt
+            kontoIn.Id = id;
             await _kontoRepository.UpdateKontoAsync(id, kontoIn);
             return NoContent();
         }

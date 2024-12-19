@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SmartFlow_Backend.Models
 {
@@ -7,9 +9,13 @@ namespace SmartFlow_Backend.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; } // Nullable, damit MongoDB eine ID generieren kann
+        public string? Id { get; set; }
+
+        public string? BesitzerId { get; set; }
+
         public string Name { get; set; } = string.Empty;
-        public string Besitzer { get; set; } = string.Empty;
-        public decimal Geldbetrag { get; set; }
+
+        public double Geldbetrag { get; set; }
     }
+
 }
