@@ -17,5 +17,4 @@ namespace SmartFlow_Backend.Models
 
         public double Geldbetrag { get; set; }
     }
-
 }

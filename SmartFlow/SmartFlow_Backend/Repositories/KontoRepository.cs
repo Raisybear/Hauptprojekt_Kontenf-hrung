@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmartFlow_Backend.Repositories
 {
-    public class KontoRepository
+    public class KontoRepository : IKontoRepository
     {
         private readonly IMongoCollection<Konto> _kontenCollection;
 
@@ -31,16 +31,15 @@ namespace SmartFlow_Backend.Repositories
             return await _kontenCollection.Find(k => k.BesitzerId == userId).ToListAsync();
         }
 
-
         public async Task<List<Konto>> GetAllKontenAsync()
         {
             return await _kontenCollection.Find(k => true).ToListAsync();
         }
 
-            public async Task UpdateKontoAsync(string id, Konto kontoIn)
-            {
-                await _kontenCollection.ReplaceOneAsync(k => k.Id == id, kontoIn);
-            }
+        public async Task UpdateKontoAsync(string id, Konto kontoIn)
+        {
+            await _kontenCollection.ReplaceOneAsync(k => k.Id == id, kontoIn);
+        }
 
         public async Task DeleteKontoAsync(string id)
         {
