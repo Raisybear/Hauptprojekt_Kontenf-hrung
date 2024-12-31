@@ -13,9 +13,10 @@ namespace SmartFlow_Backend
             builder.Services.AddSingleton<UserRepository>();
             builder.Services.AddSingleton<KontoRepository>();
 
-            builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IKontoRepository, KontoRepository>();
+            builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<TransaktionsRepository>();
+            builder.Services.AddSingleton<TransactionsLogRepository>();
 
             builder.Services.AddSingleton<IMongoClient>(sp =>
             {

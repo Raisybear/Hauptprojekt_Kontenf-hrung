@@ -31,6 +31,18 @@ namespace SmartFlow_Backend.Controllers
             return Ok(konto);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<List<Konto>>> GetByUserId(string userId)
+        {
+            var konten = await _kontoRepository.GetKontenByUserIdAsync(userId);
+            if (konten == null)
+            {
+                return NotFound();
+            }
+            return Ok(konten);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<Konto>> Create([FromBody] KontoDto kontoDto)
         {
