@@ -10,12 +10,12 @@ namespace SmartFlow_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthentificationController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly UserRepository _userRepository;
 
-        public AuthController(IConfiguration configuration, UserRepository userRepository)
+        public AuthentificationController(IConfiguration configuration, UserRepository userRepository)
         {
             _configuration = configuration;
             _userRepository = userRepository;

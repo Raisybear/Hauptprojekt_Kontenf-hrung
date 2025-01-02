@@ -9,13 +9,13 @@ namespace SmartFlow_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TransaktionsController : ControllerBase
+    public class TransaktionenController : ControllerBase
     {
         private readonly TransaktionsRepository _transaktionsRepository;
         private readonly TransactionsLogRepository _transactionsLogRepository;
         private readonly IKontoRepository _kontoRepository;
 
-        public TransaktionsController(
+        public TransaktionenController(
             TransaktionsRepository transaktionsRepository,
             TransactionsLogRepository transactionsLogRepository,
             IKontoRepository kontoRepository)

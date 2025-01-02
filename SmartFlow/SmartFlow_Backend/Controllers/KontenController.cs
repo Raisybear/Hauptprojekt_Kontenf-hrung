@@ -11,11 +11,11 @@ namespace SmartFlow_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KontoController : ControllerBase
+    public class KontenController : ControllerBase
     {
         private readonly KontoRepository _kontoRepository;
 
-        public KontoController(KontoRepository kontoRepository)
+        public KontenController(KontoRepository kontoRepository)
         {
             _kontoRepository = kontoRepository;
         }
