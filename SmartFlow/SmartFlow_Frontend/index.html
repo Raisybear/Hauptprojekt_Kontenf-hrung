@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -14,7 +14,7 @@
           <button onclick="showSection('dashboard')">Dashboard</button>
           <button onclick="showSection('accounts')">Konten</button>
           <button onclick="showSection('transactions')">Buchungen</button>
-          <button onclick="showSection('reports')">Berichte</button>
+          <button onclick="logout()">Logout</button>
         </nav>
       </header>
 
@@ -29,7 +29,6 @@
             <button type="submit">Einloggen</button>
           </form>
           <div id="login-message"></div>
-          <p>Noch kein Konto? <button id="to-register">Registrieren</button></p>
         </section>
 
         <section id="register">
@@ -42,70 +41,72 @@
             <button type="submit">Registrieren</button>
           </form>
           <div id="register-message"></div>
-          <p>Bereits ein Konto? <button id="to-login">Einloggen</button></p>
         </section>
 
-        <section id="dashboard" class="active">
-          <h2>Übersicht</h2>
-          <div id="account-overview">
-            <p>Konto: Sparkonto</p>
-            <p>Saldo: 5.000 €</p>
-            <button class="editButton">Bearbeiten</button>
-          </div>
+        <section id="dashboard">
+          <h2>Dashboard</h2>
+          <div id="account-overview"></div>
           <div id="recent-transactions">
             <h3>Letzte Buchungen</h3>
-            <ul>
-              <li>+100 € - Gehalt</li>
-              <li>-50 € - Einkauf</li>
-            </ul>
+            <ul id="recent-transaction-list"></ul>
           </div>
         </section>
 
         <section id="accounts">
           <h2>Konten</h2>
-          <ul id="account-list">
-            <li>
-              Sparkonto: 5.000 €
-              <button class="edit-btn">Bearbeiten</button>
-            </li>
-            <li>
-              Girokonto: 1.200 €
-              <button class="edit-btn">Bearbeiten</button>
-            </li>
-          </ul>
-          <button onclick="addAccount()">Neues Konto erstellen</button>
+          <ul id="account-list"></ul>
+          <button onclick="showSection('create-account')">
+            Neues Konto erstellen
+          </button>
+        </section>
+
+        <section id="create-account" style="display: none">
+          <h2>Neues Konto erstellen</h2>
+          <form id="create-account-form">
+            <label for="account-name">Kontoname:</label>
+            <input type="text" id="account-name" required />
+
+            <label for="initial-amount">Startbetrag:</label>
+            <input type="number" id="initial-amount" required />
+
+            <button type="submit">Konto erstellen</button>
+          </form>
+          <button onclick="showSection('accounts')">Zurück zu Konten</button>
         </section>
 
         <section id="transactions">
           <h2>Buchungen</h2>
           <form id="transaction-form">
-            <label>
-              Betrag:
-              <input type="number" id="amount" required />
-            </label>
-            <label>
-              Kommentar:
-              <input type="text" id="comment" required />
-            </label>
-            <button type="submit">Buchen</button>
+            <label for="transaction-type">Typ:</label>
+            <select id="transaction-type" required>
+              <option value="deposit">Einzahlung</option>
+              <option value="withdraw">Abhebung</option>
+              <option value="transfer">Überweisung</option>
+            </select>
+
+            <label for="source-account">Quellkonto:</label>
+            <input type="text" id="source-account" required />
+
+            <label for="target-account">Zielkonto:</label>
+            <input type="text" id="target-account" required />
+
+            <label for="amount">Betrag:</label>
+            <input type="number" id="amount" required />
+
+            <label for="comment">Nachricht:</label>
+            <input type="text" id="comment" required />
+
+            <button type="submit">Ausführen</button>
           </form>
+
           <div id="transaction-list">
             <h3>Alle Buchungen</h3>
-            <ul>
-              <li>+100 € - Gehalt</li>
-              <li>-50 € - Einkauf</li>
-            </ul>
+            <ul id="transaction-list-ul"></ul>
           </div>
-        </section>
-
-        <section id="reports">
-          <h2>Berichte</h2>
-          <p>Buchungshistorie und Analyse</p>
         </section>
       </main>
     </div>
+
     <script src="script.js"></script>
-    <script src="login.js"></script>
-    <script src="register.js"></script>
   </body>
 </html>

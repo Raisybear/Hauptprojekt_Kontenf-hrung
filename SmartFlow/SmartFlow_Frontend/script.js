@@ -1,152 +1,190 @@
-function showSection(sectionId) {
-  const sections = document.querySelectorAll("main > section");
-  sections.forEach((section) => section.classList.remove("active"));
-  document.getElementById(sectionId).classList.add("active");
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  showSection("login");
+  const token = localStorage.getItem("authToken");
+
+  if (token) {
+    document.getElementById("menu-bar").style.display = "flex";
+    showSection("dashboard");
+    fetchAccounts(); // Zeige Konten direkt beim Laden des Dashboards
+  } else {
+    showSection("login");
+  }
+
+  document.getElementById("login-form").addEventListener("submit", loginUser);
+  document
+    .getElementById("register-form")
+    .addEventListener("submit", registerUser);
+  document
+    .getElementById("transaction-form")
+    .addEventListener("submit", handleTransaction);
+  document
+    .getElementById("create-account-form")
+    .addEventListener("submit", handleCreateAccount);
 });
 
-function addAccount() {
-  const accountList = document.getElementById("account-list");
-  const newAccount = document.createElement("li");
-  const accountText = document.createTextNode("Neues Konto: 0€");
-  newAccount.appendChild(accountText);
-  const editButton = document.createElement("button");
-  editButton.className = "edit-btn";
-  editButton.textContent = "Bearbeiten";
-  editButton.addEventListener("click", enableEdit);
-  newAccount.appendChild(editButton);
-  accountList.appendChild(newAccount);
-}
-
-function enableEdit(event) {
-  const listItem = event.target.closest("li");
-  const currentText = listItem.childNodes[0].nodeValue.trim();
-  const [name, balance] = currentText
-    .split(":")
-    .map((item) => item.trim().replace("€", ""));
-
-  while (listItem.firstChild) {
-    listItem.removeChild(listItem.firstChild);
-  }
-  const nameInput = document.createElement("input");
-  nameInput.type = "text";
-  nameInput.className = "edit-name";
-  nameInput.value = name;
-
-  const balanceInput = document.createElement("input");
-  balanceInput.type = "number";
-  balanceInput.className = "edit-balance";
-  balanceInput.value = balance;
-
-  // Speichern-Button erstellen
-  const saveButton = document.createElement("button");
-  saveButton.className = "save-btn";
-  saveButton.textContent = "Speichern";
-
-  // Eventlistener für Speichern
-  saveButton.addEventListener("click", saveEdit);
-
-  // Elemente hinzufügen
-  listItem.appendChild(nameInput);
-  listItem.appendChild(balanceInput);
-  listItem.appendChild(saveButton);
-}
-  
-
-
-
-function saveEdit(event) {
-  const listItem = event.target.closest("li");
-  const newName = listItem.querySelector(".edit-name").value;
-  const newBalance = listItem.querySelector(".edit-balance").value;
-
-  if (!newName || isNaN(newBalance)) {
-    alert("Bitte gültige Werte eingeben!");
-    return;
-  }
-
-  // Liste leeren
-  while (listItem.firstChild) {
-    listItem.removeChild(listItem.firstChild);
-  }
-
-  const textNode = document.createTextNode(`${newName}: ${newBalance} €`);
-
-  const editButton = document.createElement("button");
-  editButton.className = "edit-btn";
-  editButton.textContent = "Bearbeiten";
-
-  // Eventlistener für Bearbeiten
-  editButton.addEventListener("click", enableEdit);
-
-  // Elemente hinzufügen
-  listItem.appendChild(textNode);
-  listItem.appendChild(editButton);
-
-  listItem.querySelector(".edit-btn").addEventListener("click", enableEdit);
-}
-
-document.querySelectorAll("#account-list .edit-btn").forEach((button) => {
-  button.addEventListener("click", enableEdit);
-});
-
-function editAccount(event) {
-  const account = event.target;
-  const accountDetails = account.textContent.split(":");
-  const newName =
-    prompt("Kontoname bearbeiten: ", accountDetails[0]) || accountDetails[0];
-  account.textContent = `${newName}:`;
-  account.addEventListener("click", editAccount);
-  document.querySelectorAll("#account-list li").forEach((account) => {
-    account.addEventListener("click", editAccount);
+function showSection(sectionId) {
+  document.querySelectorAll("main > section").forEach((section) => {
+    section.classList.remove("active");
+    section.style.display = "none";
   });
+  document.getElementById(sectionId).classList.add("active");
+  document.getElementById(sectionId).style.display = "block";
+
+  if (sectionId === "accounts") {
+    fetchAccounts(); // Aktualisiere die Kontenübersicht, wenn die Seite "Konten" angezeigt wird
+  }
 }
 
-document
-  .getElementById("transaction-form")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
+async function loginUser(event) {
+  event.preventDefault();
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-    const amount = document.getElementById("amount").value;
-    const comment = document.getElementById("comment").value;
+  try {
+    const response = await fetch("https://localhost:7143/api/Auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
 
-    const transactionList = document.querySelector("#transaction-list ul");
-    const newTransaction = document.createElement("li");
-    newTransaction.textContent = `${
-      amount > 0 ? "+" : ""
-    }${amount} € - ${comment}`;
-    transactionList.appendChild(newTransaction);
+    if (!response.ok) throw new Error("Login fehlgeschlagen.");
+    const token = await response.text();
+    localStorage.setItem("authToken", token);
+    document.getElementById("menu-bar").style.display = "flex";
+    showSection("dashboard");
+    fetchAccounts(); // Zeige Konten nach dem Login
+  } catch (error) {
+    alert(error.message);
+  }
+}
 
-    document.getElementById("transaction-form").reset();
-  });
+async function registerUser(event) {
+  event.preventDefault();
+  const username = document.getElementById("register-username").value;
+  const password = document.getElementById("register-password").value;
+
+  try {
+    const response = await fetch("https://localhost:7143/api/Auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) throw new Error("Registrierung fehlgeschlagen.");
+    alert("Registrierung erfolgreich.");
+    showSection("login");
+  } catch (error) {
+    alert(error.message);
+  }
+}
 
 async function fetchAccounts() {
-  const response = await fetch("/api/accounts");
-  const accounts = await response.json();
-  renderAccounts(accounts);
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await fetch("https://localhost:7143/api/Konten/user/1", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) throw new Error("Konten konnten nicht geladen werden.");
+
+    const accounts = await response.json();
+    renderAccounts(accounts); // Zeige die Konten im Dashboard und in der Kontenübersicht
+  } catch (error) {
+    console.error(error.message);
+    alert("Fehler beim Laden der Konten.");
+  }
 }
 
 function renderAccounts(accounts) {
   const accountList = document.getElementById("account-list");
-  accountList.innerHTML = "";
+  accountList.innerHTML = ""; // Leere die Liste, bevor neue Konten eingefügt werden
+
   accounts.forEach((account) => {
-     const listItem = document.createElement("li");
-
-     const accountText = document.createTextNode(`${account.name}: ${account.balance} €`);
-    listItem.appendChild(accountText);
-
-     const editButton = document.createElement("button");
-    editButton.className = "edit-btn";
-    editButton.textContent = "Bearbeiten";
-    editButton.dataset.id = account.id;
-
-     editButton.addEventListener("click", () => enableEdit(account));
-
-     listItem.appendChild(editButton);
-
-     accountList.appendChild(listItem);
+    const row = document.createElement("li");
+    row.textContent = `${account.name}: ${account.geldbetrag.toFixed(2)} €`;
+    accountList.appendChild(row);
   });
+}
+
+async function handleCreateAccount(event) {
+  event.preventDefault();
+
+  const accountName = document.getElementById("account-name").value;
+  const initialAmount = parseFloat(
+    document.getElementById("initial-amount").value
+  );
+
+  if (!accountName || isNaN(initialAmount)) {
+    alert("Bitte alle Felder korrekt ausfüllen.");
+    return;
+  }
+
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await fetch("https://localhost:7143/api/Konten", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: accountName,
+        geldbetrag: initialAmount,
+        token: token,
+      }),
+    });
+
+    if (!response.ok) throw new Error("Konto konnte nicht erstellt werden.");
+    alert("Konto erfolgreich erstellt.");
+    document.getElementById("create-account-form").reset();
+    fetchAccounts(); // Aktualisiere die Kontenübersicht
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+async function handleTransaction(event) {
+  event.preventDefault();
+
+  const type = document.getElementById("transaction-type").value;
+  const sourceAccount = document.getElementById("source-account").value;
+  const targetAccount = document.getElementById("target-account").value;
+  const amount = parseFloat(document.getElementById("amount").value);
+  const comment = document.getElementById("comment").value;
+
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const endpoint = type === "transfer" ? "transfer" : type;
+    const response = await fetch(
+      `https://localhost:7143/api/Transaktionen/${endpoint}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          quellkontoId: sourceAccount,
+          zielkontoId: targetAccount,
+          betrag: amount,
+          nachricht: comment,
+          benutzerId: "1",
+        }),
+      }
+    );
+
+    if (!response.ok) throw new Error("Transaktion fehlgeschlagen.");
+    alert("Transaktion erfolgreich durchgeführt.");
+    fetchTransactions(); // Aktualisiere die Transaktionsliste
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+function logout() {
+  localStorage.removeItem("authToken");
+  document.getElementById("menu-bar").style.display = "none";
+  showSection("login");
 }

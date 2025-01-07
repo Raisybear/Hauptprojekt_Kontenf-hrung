@@ -63,7 +63,8 @@ form label {
   margin-bottom: 1rem;
 }
 
-form input {
+form input,
+form select {
   width: 100%;
   padding: 0.5rem;
   margin-top: 0.5rem;
@@ -71,37 +72,70 @@ form input {
   border-radius: 5px;
 }
 
-#account-list li:hover {
-  cursor: pointer;
-  background-color: #f0f0f0;
+#login-message,
+#register-message {
+  margin-top: 1rem;
+  font-weight: bold;
 }
 
-#account-list input {
-  margin-right: 0.5rem;
-  padding: 0.2rem;
+#account-list li {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
-#account-list button {
-  margin-left: 0.5rem;
-  padding: 0.2rem 0.5rem;
+#account-list li:hover {
+  background-color: #f1f1f1;
+}
+
+#transaction-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+#transaction-list li {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+table tr:hover {
+  background-color: #f9f9f9;
+}
+
+button.edit-button {
+  background-color: #28a745;
+  margin: 0;
+  padding: 0.25rem 0.5rem;
   border: none;
-  background-color: #007bff;
   color: white;
   cursor: pointer;
   border-radius: 3px;
 }
 
-#account-list button:hover {
-  background-color: #0056b3;
-}
-
-#login-message {
-  margin-top: 1rem;
-  font-weight: bold;
-}
-
-#login input {
-  margin-bottom: 1rem;
+button.edit-button:hover {
+  background-color: #218838;
 }
