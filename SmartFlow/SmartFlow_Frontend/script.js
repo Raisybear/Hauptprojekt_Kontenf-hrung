@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (token) {
     document.getElementById("menu-bar").style.display = "flex";
     showSection("dashboard");
-    fetchAccounts(); // Zeige Konten direkt beim Laden des Dashboards
+    fetchAccounts();
   } else {
     showSection("login");
   }
@@ -30,7 +30,7 @@ function showSection(sectionId) {
   document.getElementById(sectionId).style.display = "block";
 
   if (sectionId === "accounts") {
-    fetchAccounts(); // Aktualisiere die Kontenübersicht, wenn die Seite "Konten" angezeigt wird
+    fetchAccounts();
   }
 }
 
@@ -51,7 +51,7 @@ async function loginUser(event) {
     localStorage.setItem("authToken", token);
     document.getElementById("menu-bar").style.display = "flex";
     showSection("dashboard");
-    fetchAccounts(); // Zeige Konten nach dem Login
+    fetchAccounts();
   } catch (error) {
     alert(error.message);
   }
@@ -80,29 +80,56 @@ async function registerUser(event) {
 async function fetchAccounts() {
   const token = localStorage.getItem("authToken");
 
+  const userId = extractUserIdFromToken(token);
+
   try {
-    const response = await fetch("https://localhost:7143/api/Konten/user/1", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await fetch(
+      `https://localhost:7143/api/Konten/user/${userId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
-    if (!response.ok) throw new Error("Konten konnten nicht geladen werden.");
+    console.log("HTTP-Status:", response.status);
 
-    const accounts = await response.json();
-    renderAccounts(accounts); // Zeige die Konten im Dashboard und in der Kontenübersicht
+    const responseText = await response.text();
+    console.log("API-Response (text/plain):", responseText);
+
+    const accounts = JSON.parse(responseText);
+    console.log("API-Response (geparst):", accounts);
+
+    renderAccounts(accounts);
+    renderDashboardAccounts(accounts);
   } catch (error) {
-    console.error(error.message);
+    console.error("Fehler:", error.message);
     alert("Fehler beim Laden der Konten.");
   }
 }
 
+function extractUserIdFromToken(token) {
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  return payload.UserId || payload.userId || payload.id;
+}
+
 function renderAccounts(accounts) {
   const accountList = document.getElementById("account-list");
-  accountList.innerHTML = ""; // Leere die Liste, bevor neue Konten eingefügt werden
+  accountList.innerHTML = "";
 
   accounts.forEach((account) => {
     const row = document.createElement("li");
     row.textContent = `${account.name}: ${account.geldbetrag.toFixed(2)} €`;
     accountList.appendChild(row);
+  });
+}
+
+function renderDashboardAccounts(accounts) {
+  const accountOverview = document.getElementById("account-overview");
+  accountOverview.innerHTML = "";
+  accounts.forEach((account) => {
+    const div = document.createElement("div");
+    div.className = "account";
+    div.textContent = `${account.name}: ${account.geldbetrag.toFixed(2)} €`;
+    accountOverview.appendChild(div);
   });
 }
 
@@ -138,7 +165,7 @@ async function handleCreateAccount(event) {
     if (!response.ok) throw new Error("Konto konnte nicht erstellt werden.");
     alert("Konto erfolgreich erstellt.");
     document.getElementById("create-account-form").reset();
-    fetchAccounts(); // Aktualisiere die Kontenübersicht
+    fetchAccounts();
   } catch (error) {
     alert(error.message);
   }
@@ -177,7 +204,7 @@ async function handleTransaction(event) {
 
     if (!response.ok) throw new Error("Transaktion fehlgeschlagen.");
     alert("Transaktion erfolgreich durchgeführt.");
-    fetchTransactions(); // Aktualisiere die Transaktionsliste
+    fetchTransactions();
   } catch (error) {
     alert(error.message);
   }
