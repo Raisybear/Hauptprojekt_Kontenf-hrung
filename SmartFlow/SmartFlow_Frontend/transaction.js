@@ -1,38 +1,72 @@
-export async function handleTransaction(event) {
-  event.preventDefault();
+import { extractUserIdFromToken } from "./utils.js";
 
-  const type = document.getElementById("transaction-type").value;
-  const sourceAccount = document.getElementById("source-account").value;
-  const targetAccount = document.getElementById("target-account").value;
-  const amount = parseFloat(document.getElementById("amount").value);
-  const comment = document.getElementById("comment").value;
-
+export async function fetchTransactions() {
   const token = localStorage.getItem("authToken");
 
   try {
-    const endpoint = type === "transfer" ? "transfer" : type;
-    const response = await fetch(
-      `https://localhost:7143/api/Transaktionen/${endpoint}`,
+    const userId = extractUserIdFromToken(token);
+
+    // 1. Konten des Benutzers abrufen
+    const responseAccounts = await fetch(
+      `https://localhost:7143/api/Konten/user/${userId}`,
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          quellkontoId: sourceAccount,
-          zielkontoId: targetAccount,
-          betrag: amount,
-          nachricht: comment,
-          benutzerId: "1",
-        }),
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
 
-    if (!response.ok) throw new Error("Transaktion fehlgeschlagen.");
-    alert("Transaktion erfolgreich durchgeführt.");
-    fetchTransactions();
+    if (!responseAccounts.ok)
+      throw new Error("Konten konnten nicht geladen werden.");
+    const accounts = await responseAccounts.json();
+
+    // 2. Transaktionen für alle Konten abrufen
+    const allTransactions = [];
+    for (const account of accounts) {
+      const responseTransactions = await fetch(
+        `https://localhost:7143/api/Transaktionen/transactions/${account.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!responseTransactions.ok) {
+        console.warn(
+          `Transaktionen konnten für Konto ${account.id} nicht geladen werden.`
+        );
+        continue;
+      }
+
+      const transactions = await responseTransactions.json();
+      allTransactions.push(...transactions);
+    }
+
+    // 3. Transaktionen rendern
+    renderTransactions(allTransactions);
   } catch (error) {
-    alert(error.message);
+    console.error("Fehler beim Abrufen der Transaktionen:", error.message);
+    alert("Fehler beim Laden der Transaktionen.");
   }
+}
+
+export function renderTransactions(transactions) {
+  const transactionList = document.getElementById("transaction-list-ul");
+  transactionList.innerHTML = ""; // Alte Inhalte löschen
+
+  if (transactions.length === 0) {
+    const noTransactions = document.createElement("li");
+    noTransactions.textContent = "Keine Transaktionen gefunden.";
+    transactionList.appendChild(noTransactions);
+    return;
+  }
+
+  transactions.forEach((transaction) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `Konto: ${
+      transaction.quellkontoId || transaction.zielkontoId
+    } | Betrag: ${
+      transaction.betrag > 0 ? "+" : ""
+    }${transaction.betrag} € - Nachricht: ${
+      transaction.nachricht
+    } - Datum: ${new Date(transaction.erstellungsdatum).toLocaleString()}`;
+    transactionList.appendChild(listItem);
+  });
 }

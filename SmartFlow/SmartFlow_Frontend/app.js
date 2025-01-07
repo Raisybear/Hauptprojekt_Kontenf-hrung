@@ -1,7 +1,6 @@
-import { loginUser, registerUser, logout } from "./auth.js";
-import { fetchAccounts, handleCreateAccount } from "./account.js";
-import { handleTransaction } from "./transaction.js";
 import { showSection } from "./utils.js";
+import { fetchAccounts, handleCreateAccount } from "./account.js";
+import { loginUser, registerUser, logout } from "./auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("authToken");
@@ -19,9 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("register-form")
     .addEventListener("submit", registerUser);
   document
-    .getElementById("transaction-form")
-    .addEventListener("submit", handleTransaction);
-  document
     .getElementById("create-account-form")
     .addEventListener("submit", handleCreateAccount);
 });
@@ -32,5 +28,4 @@ window.fetchAccounts = fetchAccounts;
 window.handleCreateAccount = handleCreateAccount;
 window.loginUser = loginUser;
 window.registerUser = registerUser;
-window.handleTransaction = handleTransaction;
-window.logout = logout;
+window.logout = logout; // HIER wird logout global verfügbar gemacht
