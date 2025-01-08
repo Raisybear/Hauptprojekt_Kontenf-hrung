@@ -16,6 +16,7 @@ export async function fetchAccounts() {
     const accounts = JSON.parse(responseText);
 
     renderAccounts(accounts);
+    renderAccountDropdown(accounts);
     renderDashboardAccounts(accounts);
   } catch (error) {
     console.error(error.message);
@@ -31,6 +32,29 @@ export function renderAccounts(accounts) {
     const row = document.createElement("li");
     row.textContent = `${account.name}: ${account.geldbetrag.toFixed(2)} €`;
     accountList.appendChild(row);
+  });
+}
+
+export function renderAccountDropdown(accounts) {
+  const depositDropdown = document.getElementById("deposit-account");
+  const withdrawDropdown = document.getElementById("withdraw-account");
+
+  depositDropdown.innerHTML = "<option value=''>Bitte Konto wählen</option>";
+  if (withdrawDropdown) {
+    withdrawDropdown.innerHTML = "<option value=''>Bitte Konto wählen</option>";
+  }
+
+  accounts.forEach((account) => {
+    const option = document.createElement("option");
+    option.value = account.id;
+    option.textContent = `${account.name} (${account.geldbetrag.toFixed(2)} €)`;
+
+    depositDropdown.appendChild(option);
+
+    if (withdrawDropdown) {
+      const withdrawOption = option.cloneNode(true);
+      withdrawDropdown.appendChild(withdrawOption);
+    }
   });
 }
 

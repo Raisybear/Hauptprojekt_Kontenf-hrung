@@ -1,7 +1,6 @@
 import { extractUserIdFromToken } from "./utils.js";
 
 export async function depositMoney(event) {
-  // Sicherstellen, dass 'event' korrekt übergeben wird
   event.preventDefault();
 
   const accountId = document.getElementById("deposit-account").value;
@@ -76,7 +75,7 @@ export async function withdrawMoney(event) {
     if (!response.ok) throw new Error("Abhebung fehlgeschlagen.");
     alert("Abhebung erfolgreich durchgeführt.");
     document.getElementById("withdraw-form").reset();
-    fetchTransactions(); // Optional: Transaktionen nach der Abhebung aktualisieren
+    fetchTransactions();
   } catch (error) {
     console.error(error.message);
     alert(error.message);
@@ -94,7 +93,6 @@ export async function fetchTransactions() {
   const userId = extractUserIdFromToken(token);
 
   try {
-    // Erstelle eine Liste von Transaktionen basierend auf allen Konten des Benutzers
     const responseAccounts = await fetch(
       `https://localhost:7143/api/Konten/user/${userId}`,
       {
@@ -120,7 +118,7 @@ export async function fetchTransactions() {
         throw new Error("Transaktionen konnten nicht geladen werden.");
 
       const accountTransactions = await responseTransactions.json();
-      transactions.push(...accountTransactions); // Alle Transaktionen in die Liste hinzufügen
+      transactions.push(...accountTransactions);
     }
 
     renderTransactions(transactions);
@@ -130,24 +128,72 @@ export async function fetchTransactions() {
   }
 }
 
+export async function fetchTransactionsByAccount(accountId) {
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await fetch(
+      `https://localhost:7143/api/Transaktionen/transactions/${accountId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (!response.ok) throw new Error("Fehler beim Laden der Transaktionen.");
+    const transactions = await response.json();
+    renderTransactions(transactions);
+  } catch (error) {
+    console.error(error.message);
+    alert("Fehler beim Laden der Transaktionen.");
+  }
+}
+
 export function renderTransactions(transactions) {
-  const transactionList = document.getElementById("transaction-list-ul");
-  transactionList.innerHTML = ""; // Liste vor dem Hinzufügen leeren
+  const transactionListBody = document.getElementById("transaction-list-body");
+  transactionListBody.innerHTML = "";
 
   if (transactions.length === 0) {
-    const noTransactions = document.createElement("li");
-    noTransactions.textContent = "Keine Transaktionen gefunden.";
-    transactionList.appendChild(noTransactions);
+    const noTransactionsRow = document.createElement("tr");
+    noTransactionsRow.innerHTML = `<td colspan="4">Keine Transaktionen gefunden.</td>`;
+    transactionListBody.appendChild(noTransactionsRow);
     return;
   }
 
   transactions.forEach((transaction) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = `${
-      transaction.betrag > 0 ? "+" : ""
-    }${transaction.betrag.toFixed(2)} € - ${
-      transaction.nachricht || "Keine Nachricht"
-    } (Konto: ${transaction.quellkontoId || transaction.zielkontoId})`;
-    transactionList.appendChild(listItem);
+    const row = document.createElement("tr");
+
+    const dateCell = document.createElement("td");
+    dateCell.textContent = new Date(transaction.datum).toLocaleDateString();
+
+    const amountCell = document.createElement("td");
+    amountCell.textContent = `${transaction.betrag > 0 ? "+" : ""}${transaction.betrag.toFixed(2)} €`;
+
+    const messageCell = document.createElement("td");
+    messageCell.textContent = transaction.nachricht || "Keine Nachricht";
+
+    const accountCell = document.createElement("td");
+    accountCell.textContent = transaction.quellkontoId || transaction.zielkontoId;
+
+    row.appendChild(dateCell);
+    row.appendChild(amountCell);
+    row.appendChild(messageCell);
+    row.appendChild(accountCell);
+
+    transactionListBody.appendChild(row);
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const depositAccountDropdown = document.getElementById("deposit-account");
+
+  if (depositAccountDropdown) {
+    depositAccountDropdown.addEventListener("change", (event) => {
+      const selectedAccountId = event.target.value;
+      if (selectedAccountId) {
+        fetchTransactionsByAccount(selectedAccountId);
+      }
+    });
+  } else {
+    console.error("Dropdown-Menü mit ID 'deposit-account' wurde nicht gefunden.");
+  }
+});
