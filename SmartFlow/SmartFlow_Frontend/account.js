@@ -47,7 +47,7 @@ export function renderAccounts(accounts) {
     nameCell.textContent = account.name;
 
     const amountCell = document.createElement("td");
-    amountCell.textContent = `${account.geldbetrag.toFixed(2)} €`;
+    amountCell.textContent = `${account.geldbetrag.toFixed(2)} CHF`;
 
     row.appendChild(nameCell);
     row.appendChild(amountCell);
@@ -82,7 +82,7 @@ export function renderAccountDropdown(accounts) {
   accounts.forEach((account) => {
     const option = document.createElement("option");
     option.value = account.id;
-    option.textContent = `${account.name} (${account.geldbetrag.toFixed(2)} €)`;
+    option.textContent = `${account.name} (${account.geldbetrag.toFixed(2)} CHF)`;
 
     depositDropdown.appendChild(option);
 

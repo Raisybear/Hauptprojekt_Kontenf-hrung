@@ -167,11 +167,11 @@ export function renderTransactions(transactions) {
 
     const amountCell = document.createElement("td");
     if (transaction.nachricht.includes("Einzahlung")) {
-      amountCell.textContent = `+  ${transaction.betrag.toFixed(2)} €`;
+      amountCell.textContent = `+ ${transaction.betrag.toFixed(2)} CHF`;
     } else if (transaction.nachricht.includes("Bezug Bargeld")) {
-      amountCell.textContent = `-  ${transaction.betrag.toFixed(2)} €`;
+      amountCell.textContent = `- ${transaction.betrag.toFixed(2)} CHF`;
     } else {
-      amountCell.textContent = `${transaction.betrag.toFixed(2)} €`;
+      amountCell.textContent = `${transaction.betrag.toFixed(2)} CHF`;
     }
 
     const messageCell = document.createElement("td");
