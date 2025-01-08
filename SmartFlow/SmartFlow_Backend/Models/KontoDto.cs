@@ -10,6 +10,9 @@ namespace SmartFlow_Backend.Models
         [Range(0, double.MaxValue, ErrorMessage = "Der Geldbetrag muss positiv sein.")]
         public double Geldbetrag { get; set; }
 
+        [Required(ErrorMessage = "Der Zinssatz ist erforderlich.")]
+        public double Zinssatz { get; set; }
+
         [Required(ErrorMessage = "Das Token ist erforderlich.")]
         public string Token { get; set; } = string.Empty;
     }

@@ -47,7 +47,7 @@ namespace SmartFlow_Backend.Controllers
         {
             try
             {
-                var konten = await _kontoRepository.GetAllKontenAsync(); // Neue Repository-Methode
+                var konten = await _kontoRepository.GetAllKontenAsync(); 
                 if (konten == null || konten.Count == 0)
                 {
                     return NotFound("Es wurden keine Konten gefunden.");
@@ -94,12 +94,12 @@ namespace SmartFlow_Backend.Controllers
                     return Unauthorized("UserId konnte nicht aus dem Token extrahiert werden.");
                 }
 
-                // Konto erstellen
                 var konto = new Konto
                 {
                     Name = kontoDto.Name,
                     Geldbetrag = kontoDto.Geldbetrag,
-                    BesitzerId = userId
+                    BesitzerId = userId,
+                    Zinssatz = kontoDto.Zinssatz
                 };
 
                 await _kontoRepository.CreateKontoAsync(konto);

@@ -30,10 +30,10 @@ export function renderAccounts(accounts) {
     accountList.removeChild(accountList.firstChild);
   }
 
-  if (accounts.length === 0) {
+  if (!accounts || accounts.length === 0) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
-    cell.colSpan = 3;
+    cell.colSpan = 4;
     cell.textContent = "Keine Konten gefunden.";
     row.appendChild(cell);
     accountList.appendChild(row);
@@ -44,10 +44,18 @@ export function renderAccounts(accounts) {
     const row = document.createElement("tr");
 
     const nameCell = document.createElement("td");
-    nameCell.textContent = account.name;
+    nameCell.textContent = account.name || "Unbekannt";
 
     const amountCell = document.createElement("td");
-    amountCell.textContent = `${account.geldbetrag.toFixed(2)} CHF`;
+    amountCell.textContent = account.geldbetrag
+      ? `${account.geldbetrag.toFixed(2)} CHF`
+      : "0.00 CHF";
+
+    const interestCell = document.createElement("td");
+    interestCell.textContent =
+      typeof account.zinssatz === "number"
+        ? `${account.zinssatz.toFixed(2)} %`
+        : "0.00 %";
 
     const deleteCell = document.createElement("td");
     const deleteButton = document.createElement("button");
@@ -58,6 +66,7 @@ export function renderAccounts(accounts) {
 
     row.appendChild(nameCell);
     row.appendChild(amountCell);
+    row.appendChild(interestCell);
     row.appendChild(deleteCell);
 
     accountList.appendChild(row);
@@ -135,8 +144,11 @@ export async function handleCreateAccount(event) {
   const initialAmount = parseFloat(
     document.getElementById("initial-amount").value
   );
+  const interestRate = parseFloat(
+    document.getElementById("interest-rate").value
+  );
 
-  if (!accountName || isNaN(initialAmount)) {
+  if (!accountName || isNaN(initialAmount) || isNaN(interestRate)) {
     alert("Bitte alle Felder korrekt ausfüllen.");
     return;
   }
@@ -153,6 +165,7 @@ export async function handleCreateAccount(event) {
       body: JSON.stringify({
         name: accountName,
         geldbetrag: initialAmount,
+        zinssatz: interestRate,
         token,
       }),
     });

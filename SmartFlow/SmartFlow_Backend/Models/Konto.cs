@@ -16,5 +16,7 @@ namespace SmartFlow_Backend.Models
         public string Name { get; set; } = string.Empty;
 
         public double Geldbetrag { get; set; }
+
+        public double Zinssatz { get; set; }
     }
 }
