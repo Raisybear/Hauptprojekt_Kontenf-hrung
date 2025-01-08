@@ -58,6 +58,19 @@ button:hover {
   background-color: #0056b3;
 }
 
+button.delete-button {
+  background-color: #dc3545;
+  border: 1px solid #dc3545;
+  margin: 0px;
+}
+
+button.delete-button:hover {
+  background-color: #ffffff;
+  color: #dc3545;
+  border-color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
 form label {
   display: block;
   margin-bottom: 1rem;
