@@ -88,8 +88,22 @@ namespace SmartFlow_Backend.Controllers
                     return Unauthorized("Sie sind nicht berechtigt, auf dieses Konto zuzugreifen.");
                 }
 
+                // Konto aktualisieren
                 konto.Geldbetrag += transaktionRequest.Betrag;
                 await _kontoRepository.UpdateKontoAsync(konto.Id, konto);
+
+                // Transaktion speichern
+                var transaktion = new Transaktion
+                {
+                    QuellkontoId = "Bargeld", // Quellkonto ist Bargeld
+                    ZielkontoId = transaktionRequest.KontoId,
+                    BenutzerId = transaktionRequest.BenutzerId,
+                    Betrag = transaktionRequest.Betrag,
+                    Nachricht = "Einzahlung", // Nachricht automatisch "Einzahlung"
+                    Erstellungsdatum = DateTime.UtcNow
+                };
+
+                await _transactionsLogRepository.SpeichereTransaktionAsync(transaktion);
 
                 return Ok(new { Nachricht = "Einzahlung erfolgreich.", NeuerBetrag = konto.Geldbetrag });
             }
@@ -126,8 +140,22 @@ namespace SmartFlow_Backend.Controllers
                     return BadRequest("Unzureichender Kontostand.");
                 }
 
+                // Konto aktualisieren
                 konto.Geldbetrag -= transaktionRequest.Betrag;
                 await _kontoRepository.UpdateKontoAsync(konto.Id, konto);
+
+                // Transaktion speichern
+                var transaktion = new Transaktion
+                {
+                    QuellkontoId = transaktionRequest.KontoId,
+                    ZielkontoId = "Bargeld", // Zielkonto ist Bargeld
+                    BenutzerId = transaktionRequest.BenutzerId,
+                    Betrag = transaktionRequest.Betrag,
+                    Nachricht = "Abhebung", // Nachricht automatisch "Abhebung"
+                    Erstellungsdatum = DateTime.UtcNow
+                };
+
+                await _transactionsLogRepository.SpeichereTransaktionAsync(transaktion);
 
                 return Ok(new { Nachricht = "Abhebung erfolgreich.", NeuerBetrag = konto.Geldbetrag });
             }
@@ -137,6 +165,7 @@ namespace SmartFlow_Backend.Controllers
                 return StatusCode(500, "Ein Fehler ist während der Abhebung aufgetreten.");
             }
         }
+
 
         [HttpGet("transactions/{kontoId}")]
         public async Task<IActionResult> GetTransactionsForAccount(string kontoId)

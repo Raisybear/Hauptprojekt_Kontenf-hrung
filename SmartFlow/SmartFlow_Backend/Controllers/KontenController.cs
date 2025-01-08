@@ -42,6 +42,25 @@ namespace SmartFlow_Backend.Controllers
             return Ok(konten);
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult<List<Konto>>> GetAllKonten()
+        {
+            try
+            {
+                var konten = await _kontoRepository.GetAllKontenAsync(); // Neue Repository-Methode
+                if (konten == null || konten.Count == 0)
+                {
+                    return NotFound("Es wurden keine Konten gefunden.");
+                }
+                return Ok(konten);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim Abrufen aller Konten: {ex.Message}");
+                return StatusCode(500, "Ein Fehler ist während des Abrufs der Konten aufgetreten.");
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<Konto>> Create([FromBody] KontoDto kontoDto)
