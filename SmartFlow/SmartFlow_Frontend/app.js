@@ -4,6 +4,8 @@ import { loginUser, registerUser, logout } from "./auth.js";
 import {
   depositMoney,
   withdrawMoney,
+  transferMoney,
+  populateSourceAndDestinationAccounts,
   fetchTransactions,
 } from "./transaction.js";
 
@@ -35,6 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const withdrawForm = document.getElementById("withdraw-form");
   if (withdrawForm) {
     withdrawForm.addEventListener("submit", withdrawMoney);
+  }
+
+  const transferForm = document.getElementById("transfer-form");
+  if (transferForm) {
+    transferForm.addEventListener("submit", transferMoney);
+    populateSourceAndDestinationAccounts();
   }
 
   const logoutButton = document.querySelector("nav button[onclick='logout()']");

@@ -14,6 +14,7 @@
           <button onclick="showSection('dashboard')">Dashboard</button>
           <button onclick="showSection('accounts')">Konten</button>
           <button onclick="showSection('transactions')">Buchungen</button>
+          <button onclick="showSection('transfer')">Überweisen</button>
           <button onclick="logout()">Logout</button>
         </nav>
       </header>
@@ -28,10 +29,14 @@
             <input type="password" id="password" required />
             <button type="submit">Einloggen</button>
           </form>
+          <p>
+            Noch keinen Account?
+            <button onclick="showSection('register')">Registrieren</button>
+          </p>
           <div id="login-message"></div>
         </section>
 
-        <section id="register">
+        <section id="register" style="display: none">
           <h2>Registrieren</h2>
           <form id="register-form">
             <label for="register-username">Benutzername:</label>
@@ -40,14 +45,13 @@
             <input type="password" id="register-password" required />
             <button type="submit">Registrieren</button>
           </form>
-          <div id="register-message"></div>
+          <button onclick="showSection('login')">Zurück zum Login</button>
         </section>
 
         <section id="dashboard">
           <h2>Dashboard</h2>
-          <div id="recent-transactions">
-            <h3>Letzte Buchungen</h3>
-            <ul id="recent-transaction-list"></ul>
+          <div>
+            <p>Willkommen zu SmartFlow</p>
           </div>
         </section>
 
@@ -58,6 +62,7 @@
               <tr>
                 <th>Konto</th>
                 <th>Betrag</th>
+                <th>Aktionen</th>
               </tr>
             </thead>
             <tbody id="account-list">
@@ -137,6 +142,57 @@
               </tbody>
             </table>
           </div>
+        </section>
+
+        <section id="transfer" style="display: none">
+          <h2>Geld Überweisen</h2>
+          <form id="transfer-form">
+            <div>
+              <label for="source-account">Quellkonto:</label>
+              <select id="source-account" required>
+                <option value="">Bitte Konto wählen</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="destination-account">Zielkonto:</label>
+              <select id="destination-account" required>
+                <option value="">Bitte Konto wählen</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="transfer-amount">Betrag:</label>
+              <input
+                type="number"
+                id="transfer-amount"
+                step="0.01"
+                min="0.01"
+                placeholder="Betrag eingeben"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="transfer-message">Nachricht (optional):</label>
+              <input
+                type="text"
+                id="transfer-message"
+                placeholder="Nachricht eingeben"
+              />
+            </div>
+
+            <div>
+              <button type="submit">Überweisen</button>
+              <button
+                type="button"
+                onclick="showSection('transactions')"
+                style="margin-left: 1rem"
+              >
+                Zurück zu Buchungen
+              </button>
+            </div>
+          </form>
         </section>
       </main>
     </div>

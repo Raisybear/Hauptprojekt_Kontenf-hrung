@@ -110,6 +110,21 @@ export async function fetchTransactions() {
       accountMap[account.id] = account.name;
     });
 
+    const responseForeignAccounts = await fetch(
+      "https://localhost:7143/api/Konten/all",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (!responseForeignAccounts.ok)
+      throw new Error("Fremdkonten konnten nicht geladen werden.");
+
+    const foreignAccounts = await responseForeignAccounts.json();
+    foreignAccounts.forEach((account) => {
+      accountMap[account.id] = account.name; 
+    });
+
     const transactions = [];
 
     for (const account of accounts) {
@@ -133,7 +148,7 @@ export async function fetchTransactions() {
         transaction.zielkontoName =
           transaction.zielkontoId === "Bar"
             ? "Bar"
-            : accountMap[transaction.zielkontoId] || "Unbekannt";
+            : accountMap[transaction.zielkontoId] || "Unbekannt"; 
       });
 
       transactions.push(...accountTransactions);
@@ -173,7 +188,6 @@ export function renderTransactions(transactions) {
     } else {
       amountCell.textContent = `${transaction.betrag.toFixed(2)} CHF`;
     }
-
     const messageCell = document.createElement("td");
     messageCell.textContent = transaction.nachricht || "Keine Nachricht";
 
@@ -190,5 +204,110 @@ export function renderTransactions(transactions) {
     row.appendChild(targetAccountCell);
 
     transactionListBody.appendChild(row);
+  });
+}
+
+export async function transferMoney(event) {
+  event.preventDefault();
+
+  const sourceAccountId = document.getElementById("source-account").value;
+  const destinationAccountId = document.getElementById(
+    "destination-account"
+  ).value;
+  const amount = parseFloat(document.getElementById("transfer-amount").value);
+  const message = document.getElementById("transfer-message").value;
+  const token = localStorage.getItem("authToken");
+
+  if (
+    !sourceAccountId ||
+    !destinationAccountId ||
+    isNaN(amount) ||
+    amount <= 0
+  ) {
+    alert("Bitte alle Felder korrekt ausfüllen.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "https://localhost:7143/api/Transaktionen/transfer",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          quellkontoId: sourceAccountId,
+          zielkontoId: destinationAccountId,
+          benutzerId: extractUserIdFromToken(token),
+          betrag: amount,
+          nachricht: message,
+        }),
+      }
+    );
+
+    if (!response.ok) throw new Error("Überweisung fehlgeschlagen.");
+    alert("Überweisung erfolgreich durchgeführt.");
+    document.getElementById("transfer-form").reset();
+    fetchTransactions();
+  } catch (error) {
+    console.error(error.message);
+    alert(error.message);
+  }
+}
+
+export async function populateSourceAndDestinationAccounts() {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    console.error("Kein Token gefunden. Benutzer nicht eingeloggt.");
+    return;
+  }
+
+  const userId = extractUserIdFromToken(token);
+
+  try {
+    const sourceResponse = await fetch(
+      `https://localhost:7143/api/Konten/user/${userId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (!sourceResponse.ok)
+      throw new Error("Fehler beim Laden der Quellkonten.");
+    const sourceAccounts = await sourceResponse.json();
+
+    const sourceDropdown = document.getElementById("source-account");
+    populateDropdown(sourceDropdown, sourceAccounts);
+
+    const destinationResponse = await fetch(
+      "https://localhost:7143/api/Konten/all",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (!destinationResponse.ok)
+      throw new Error("Fehler beim Laden der Zielkonten.");
+    const destinationAccounts = await destinationResponse.json();
+
+    const destinationDropdown = document.getElementById("destination-account");
+    populateDropdown(destinationDropdown, destinationAccounts);
+  } catch (error) {
+    console.error(error.message);
+    alert("Fehler beim Laden der Konten.");
+  }
+}
+
+function populateDropdown(dropdown, accounts) {
+  dropdown.innerHTML = "<option value=''>Bitte Konto wählen</option>";
+
+  accounts.forEach((account) => {
+    const option = document.createElement("option");
+    option.value = account.id;
+    option.textContent = `${account.name} (${account.geldbetrag.toFixed(2)} €)`;
+    dropdown.appendChild(option);
   });
 }

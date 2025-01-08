@@ -33,7 +33,7 @@ export function renderAccounts(accounts) {
   if (accounts.length === 0) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
-    cell.colSpan = 2;
+    cell.colSpan = 3;
     cell.textContent = "Keine Konten gefunden.";
     row.appendChild(cell);
     accountList.appendChild(row);
@@ -49,11 +49,46 @@ export function renderAccounts(accounts) {
     const amountCell = document.createElement("td");
     amountCell.textContent = `${account.geldbetrag.toFixed(2)} CHF`;
 
+    const deleteCell = document.createElement("td");
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Löschen";
+    deleteButton.classList.add("delete-button");
+    deleteButton.onclick = () => deleteAccount(account.id);
+    deleteCell.appendChild(deleteButton);
+
     row.appendChild(nameCell);
     row.appendChild(amountCell);
+    row.appendChild(deleteCell);
 
     accountList.appendChild(row);
   });
+}
+
+async function deleteAccount(accountId) {
+  const token = localStorage.getItem("authToken");
+
+  if (!confirm("Möchten Sie dieses Konto wirklich löschen?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://localhost:7143/api/Konten/${accountId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) throw new Error("Konto konnte nicht gelöscht werden.");
+    alert("Konto erfolgreich gelöscht.");
+    fetchAccounts();
+  } catch (error) {
+    console.error(error.message);
+    alert("Fehler beim Löschen des Kontos.");
+  }
 }
 
 export function renderAccountDropdown(accounts) {
