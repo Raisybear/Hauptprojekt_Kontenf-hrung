@@ -8,15 +8,10 @@ export function showSection(sectionId) {
     section.classList.remove("active");
     section.style.display = "none";
   });
+  document.getElementById(sectionId).classList.add("active");
+  document.getElementById(sectionId).style.display = "block";
 
-  const section = document.getElementById(sectionId);
-  section.classList.add("active");
-  section.style.display = "block";
-
-  // Lade Transaktionen, wenn die Sektion "transactions" angezeigt wird
-  if (sectionId === "transactions") {
-    import("./transaction.js").then(({ fetchTransactions }) => {
-      fetchTransactions();
-    });
+  if (sectionId === "accounts") {
+    fetchAccounts();
   }
 }

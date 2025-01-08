@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -76,6 +76,35 @@
 
         <section id="transactions">
           <h2>Buchungen</h2>
+
+          <!-- Formular für Geld einzahlen -->
+          <div id="deposit-transaction">
+            <h3>Geld einzahlen</h3>
+            <form id="deposit-form">
+              <label for="deposit-account">Konto ID:</label>
+              <input type="text" id="deposit-account" required />
+
+              <label for="deposit-amount">Betrag:</label>
+              <input type="number" id="deposit-amount" step="0.01" required />
+
+              <button type="submit">Einzahlen</button>
+            </form>
+          </div>
+
+          <!-- Formular für Geld abheben -->
+          <div id="withdraw-transaction">
+            <h3>Geld abheben</h3>
+            <form id="withdraw-form">
+              <label for="withdraw-account">Konto ID:</label>
+              <input type="text" id="withdraw-account" required />
+
+              <label for="withdraw-amount">Betrag:</label>
+              <input type="number" id="withdraw-amount" step="0.01" required />
+
+              <button type="submit">Abheben</button>
+            </form>
+          </div>
+
           <div id="transaction-list">
             <h3>Alle Buchungen</h3>
             <ul id="transaction-list-ul"></ul>
