@@ -78,32 +78,6 @@ form select {
   font-weight: bold;
 }
 
-#account-list li {
-  list-style: none;
-  margin: 1rem 0;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-#account-list li:hover {
-  background-color: #f1f1f1;
-}
-
-#transaction-list ul {
-  list-style: none;
-  padding: 0;
-}
-
-#transaction-list li {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
 table {
   width: 100%;
   border-collapse: collapse;

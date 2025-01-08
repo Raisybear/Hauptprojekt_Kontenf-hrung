@@ -17,7 +17,6 @@ export async function fetchAccounts() {
 
     renderAccounts(accounts);
     renderAccountDropdown(accounts);
-    renderDashboardAccounts(accounts);
   } catch (error) {
     console.error(error.message);
     alert("Fehler beim Laden der Konten.");
@@ -26,11 +25,33 @@ export async function fetchAccounts() {
 
 export function renderAccounts(accounts) {
   const accountList = document.getElementById("account-list");
-  accountList.innerHTML = "";
+
+  while (accountList.firstChild) {
+    accountList.removeChild(accountList.firstChild);
+  }
+
+  if (accounts.length === 0) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 2;
+    cell.textContent = "Keine Konten gefunden.";
+    row.appendChild(cell);
+    accountList.appendChild(row);
+    return;
+  }
 
   accounts.forEach((account) => {
-    const row = document.createElement("li");
-    row.textContent = `${account.name}: ${account.geldbetrag.toFixed(2)} €`;
+    const row = document.createElement("tr");
+
+    const nameCell = document.createElement("td");
+    nameCell.textContent = account.name;
+
+    const amountCell = document.createElement("td");
+    amountCell.textContent = `${account.geldbetrag.toFixed(2)} €`;
+
+    row.appendChild(nameCell);
+    row.appendChild(amountCell);
+
     accountList.appendChild(row);
   });
 }
@@ -39,9 +60,23 @@ export function renderAccountDropdown(accounts) {
   const depositDropdown = document.getElementById("deposit-account");
   const withdrawDropdown = document.getElementById("withdraw-account");
 
-  depositDropdown.innerHTML = "<option value=''>Bitte Konto wählen</option>";
+  while (depositDropdown.firstChild) {
+    depositDropdown.removeChild(depositDropdown.firstChild);
+  }
   if (withdrawDropdown) {
-    withdrawDropdown.innerHTML = "<option value=''>Bitte Konto wählen</option>";
+    while (withdrawDropdown.firstChild) {
+      withdrawDropdown.removeChild(withdrawDropdown.firstChild);
+    }
+  }
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Bitte Konto wählen";
+  depositDropdown.appendChild(defaultOption);
+
+  if (withdrawDropdown) {
+    const withdrawDefaultOption = defaultOption.cloneNode(true);
+    withdrawDropdown.appendChild(withdrawDefaultOption);
   }
 
   accounts.forEach((account) => {
@@ -55,18 +90,6 @@ export function renderAccountDropdown(accounts) {
       const withdrawOption = option.cloneNode(true);
       withdrawDropdown.appendChild(withdrawOption);
     }
-  });
-}
-
-export function renderDashboardAccounts(accounts) {
-  const accountOverview = document.getElementById("account-overview");
-  accountOverview.innerHTML = "";
-
-  accounts.forEach((account) => {
-    const div = document.createElement("div");
-    div.className = "account";
-    div.textContent = `${account.name}: ${account.geldbetrag.toFixed(2)} €`;
-    accountOverview.appendChild(div);
   });
 }
 

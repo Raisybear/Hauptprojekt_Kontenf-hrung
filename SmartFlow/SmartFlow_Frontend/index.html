@@ -1,15 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kontenführung Dashboard</title>
+    <title>SmartFlow</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div id="app">
       <header>
-        <h1>Kontenführung Dashboard</h1>
+        <h1>Kontenführung SmartFlow</h1>
         <nav id="menu-bar" style="display: none">
           <button onclick="showSection('dashboard')">Dashboard</button>
           <button onclick="showSection('accounts')">Konten</button>
@@ -45,7 +45,6 @@
 
         <section id="dashboard">
           <h2>Dashboard</h2>
-          <div id="account-overview"></div>
           <div id="recent-transactions">
             <h3>Letzte Buchungen</h3>
             <ul id="recent-transaction-list"></ul>
@@ -54,7 +53,19 @@
 
         <section id="accounts">
           <h2>Konten</h2>
-          <ul id="account-list"></ul>
+          <table>
+            <thead>
+              <tr>
+                <th>Konto</th>
+                <th>Betrag</th>
+              </tr>
+            </thead>
+            <tbody id="account-list">
+              <tr>
+                <td colspan="2">Keine Konten gefunden.</td>
+              </tr>
+            </tbody>
+          </table>
           <button onclick="showSection('create-account')">
             Neues Konto erstellen
           </button>
@@ -115,12 +126,13 @@
                   <th>Datum</th>
                   <th>Betrag</th>
                   <th>Nachricht</th>
-                  <th>Konto</th>
+                  <th>Quellkonto</th>
+                  <th>Zielkonto</th>
                 </tr>
               </thead>
               <tbody id="transaction-list-body">
                 <tr>
-                  <td colspan="4">Keine Transaktionen gefunden.</td>
+                  <td colspan="5">Keine Transaktionen gefunden.</td>
                 </tr>
               </tbody>
             </table>

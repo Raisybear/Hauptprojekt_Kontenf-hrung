@@ -35,6 +35,7 @@ export async function depositMoney(event) {
 
     alert("Einzahlung erfolgreich.");
     document.getElementById("deposit-form").reset();
+    fetchTransactions();
   } catch (error) {
     console.error(error.message);
     alert("Ein Fehler ist aufgetreten.");
@@ -104,6 +105,11 @@ export async function fetchTransactions() {
       throw new Error("Konten konnten nicht geladen werden.");
 
     const accounts = await responseAccounts.json();
+    const accountMap = {};
+    accounts.forEach((account) => {
+      accountMap[account.id] = account.name;
+    });
+
     const transactions = [];
 
     for (const account of accounts) {
@@ -118,29 +124,21 @@ export async function fetchTransactions() {
         throw new Error("Transaktionen konnten nicht geladen werden.");
 
       const accountTransactions = await responseTransactions.json();
+      accountTransactions.forEach((transaction) => {
+        transaction.quellkontoName =
+          transaction.quellkontoId === "Bar"
+            ? "Bar"
+            : accountMap[transaction.quellkontoId] || "Unbekannt";
+
+        transaction.zielkontoName =
+          transaction.zielkontoId === "Bar"
+            ? "Bar"
+            : accountMap[transaction.zielkontoId] || "Unbekannt";
+      });
+
       transactions.push(...accountTransactions);
     }
 
-    renderTransactions(transactions);
-  } catch (error) {
-    console.error(error.message);
-    alert("Fehler beim Laden der Transaktionen.");
-  }
-}
-
-export async function fetchTransactionsByAccount(accountId) {
-  const token = localStorage.getItem("authToken");
-
-  try {
-    const response = await fetch(
-      `https://localhost:7143/api/Transaktionen/transactions/${accountId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    if (!response.ok) throw new Error("Fehler beim Laden der Transaktionen.");
-    const transactions = await response.json();
     renderTransactions(transactions);
   } catch (error) {
     console.error(error.message);
@@ -154,7 +152,7 @@ export function renderTransactions(transactions) {
 
   if (transactions.length === 0) {
     const noTransactionsRow = document.createElement("tr");
-    noTransactionsRow.innerHTML = `<td colspan="4">Keine Transaktionen gefunden.</td>`;
+    noTransactionsRow.innerHTML = `<td colspan="5">Keine Transaktionen gefunden.</td>`;
     transactionListBody.appendChild(noTransactionsRow);
     return;
   }
@@ -163,37 +161,34 @@ export function renderTransactions(transactions) {
     const row = document.createElement("tr");
 
     const dateCell = document.createElement("td");
-    dateCell.textContent = new Date(transaction.datum).toLocaleDateString();
+    dateCell.textContent = new Date(
+      transaction.erstellungsdatum
+    ).toLocaleDateString();
 
     const amountCell = document.createElement("td");
-    amountCell.textContent = `${transaction.betrag > 0 ? "+" : ""}${transaction.betrag.toFixed(2)} €`;
+    if (transaction.nachricht.includes("Einzahlung")) {
+      amountCell.textContent = `+  ${transaction.betrag.toFixed(2)} €`;
+    } else if (transaction.nachricht.includes("Bezug Bargeld")) {
+      amountCell.textContent = `-  ${transaction.betrag.toFixed(2)} €`;
+    } else {
+      amountCell.textContent = `${transaction.betrag.toFixed(2)} €`;
+    }
 
     const messageCell = document.createElement("td");
     messageCell.textContent = transaction.nachricht || "Keine Nachricht";
 
-    const accountCell = document.createElement("td");
-    accountCell.textContent = transaction.quellkontoId || transaction.zielkontoId;
+    const sourceAccountCell = document.createElement("td");
+    sourceAccountCell.textContent = transaction.quellkontoName;
+
+    const targetAccountCell = document.createElement("td");
+    targetAccountCell.textContent = transaction.zielkontoName;
 
     row.appendChild(dateCell);
     row.appendChild(amountCell);
     row.appendChild(messageCell);
-    row.appendChild(accountCell);
+    row.appendChild(sourceAccountCell);
+    row.appendChild(targetAccountCell);
 
     transactionListBody.appendChild(row);
   });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const depositAccountDropdown = document.getElementById("deposit-account");
-
-  if (depositAccountDropdown) {
-    depositAccountDropdown.addEventListener("change", (event) => {
-      const selectedAccountId = event.target.value;
-      if (selectedAccountId) {
-        fetchTransactionsByAccount(selectedAccountId);
-      }
-    });
-  } else {
-    console.error("Dropdown-Menü mit ID 'deposit-account' wurde nicht gefunden.");
-  }
-});

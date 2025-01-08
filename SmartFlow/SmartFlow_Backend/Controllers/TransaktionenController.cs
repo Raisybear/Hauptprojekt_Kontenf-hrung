@@ -37,7 +37,6 @@ namespace SmartFlow_Backend.Controllers
             {
                 await _transaktionsRepository.TransferAsync(transferRequest);
 
-                // Transaktionsdetails speichern
                 var transaktion = new Transaktion
                 {
                     QuellkontoId = transferRequest.QuellkontoId,
@@ -88,18 +87,16 @@ namespace SmartFlow_Backend.Controllers
                     return Unauthorized("Sie sind nicht berechtigt, auf dieses Konto zuzugreifen.");
                 }
 
-                // Konto aktualisieren
                 konto.Geldbetrag += transaktionRequest.Betrag;
                 await _kontoRepository.UpdateKontoAsync(konto.Id, konto);
 
-                // Transaktion speichern
                 var transaktion = new Transaktion
                 {
-                    QuellkontoId = "Bargeld", // Quellkonto ist Bargeld
+                    QuellkontoId = "Bar", 
                     ZielkontoId = transaktionRequest.KontoId,
                     BenutzerId = transaktionRequest.BenutzerId,
                     Betrag = transaktionRequest.Betrag,
-                    Nachricht = "Einzahlung", // Nachricht automatisch "Einzahlung"
+                    Nachricht = "Einzahlung Bargeld", 
                     Erstellungsdatum = DateTime.UtcNow
                 };
 
@@ -140,18 +137,16 @@ namespace SmartFlow_Backend.Controllers
                     return BadRequest("Unzureichender Kontostand.");
                 }
 
-                // Konto aktualisieren
                 konto.Geldbetrag -= transaktionRequest.Betrag;
                 await _kontoRepository.UpdateKontoAsync(konto.Id, konto);
 
-                // Transaktion speichern
                 var transaktion = new Transaktion
                 {
                     QuellkontoId = transaktionRequest.KontoId,
-                    ZielkontoId = "Bargeld", // Zielkonto ist Bargeld
+                    ZielkontoId = "Bar", 
                     BenutzerId = transaktionRequest.BenutzerId,
                     Betrag = transaktionRequest.Betrag,
-                    Nachricht = "Abhebung", // Nachricht automatisch "Abhebung"
+                    Nachricht = "Bezug Bargeld", 
                     Erstellungsdatum = DateTime.UtcNow
                 };
 

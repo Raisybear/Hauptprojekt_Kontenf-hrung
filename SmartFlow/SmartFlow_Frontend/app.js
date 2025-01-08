@@ -1,8 +1,11 @@
 import { showSection } from "./utils.js";
 import { fetchAccounts, handleCreateAccount } from "./account.js";
 import { loginUser, registerUser, logout } from "./auth.js";
-import { depositMoney, withdrawMoney, fetchTransactionsByAccount } from "./transaction.js";
-import { fetchTransactions } from "./transaction.js";
+import {
+  depositMoney,
+  withdrawMoney,
+  fetchTransactions,
+} from "./transaction.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("authToken");
@@ -32,18 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const withdrawForm = document.getElementById("withdraw-form");
   if (withdrawForm) {
     withdrawForm.addEventListener("submit", withdrawMoney);
-  }
-
-  const depositAccountDropdown = document.getElementById("deposit-account");
-  if (depositAccountDropdown) {
-    depositAccountDropdown.addEventListener("change", (event) => {
-      const selectedAccountId = event.target.value;
-      if (selectedAccountId) {
-        fetchTransactionsByAccount(selectedAccountId);
-      }
-    });
-  } else {
-    console.error("Dropdown-Menü mit ID 'deposit-account' wurde nicht gefunden.");
   }
 
   const logoutButton = document.querySelector("nav button[onclick='logout()']");
