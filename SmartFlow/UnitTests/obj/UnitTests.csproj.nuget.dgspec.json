@@ -160,6 +160,10 @@
               "target": "Package",
               "version": "[17.7.1, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
             "coverlet.collector": {
               "target": "Package",
               "version": "[3.2.0, )"
