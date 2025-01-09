@@ -1,6 +1,50 @@
 import { extractUserIdFromToken } from "./utils.js";
 import { populateSourceAndDestinationAccounts } from "./transaction.js";
 
+async function editAccount(account) {
+  const newName = prompt("Neuer Kontoname:", account.name);
+  const newAmount = parseFloat(
+    prompt("Neuer Betrag:", account.geldbetrag || 0)
+  );
+  const newInterest = parseFloat(
+    prompt("Neuer Zinssatz (%):", account.zinssatz || 0)
+  );
+
+  if (!newName || isNaN(newAmount) || isNaN(newInterest)) {
+    alert("Ungültige Eingaben.");
+    return;
+  }
+
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await fetch(
+      `https://localhost:7143/api/Konten/${account.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: account.id,
+          besitzerId: account.besitzerId,
+          name: newName,
+          geldbetrag: newAmount,
+          zinssatz: newInterest,
+        }),
+      }
+    );
+
+    if (!response.ok) throw new Error("Konto konnte nicht bearbeitet werden.");
+    alert("Konto erfolgreich bearbeitet.");
+    fetchAccounts();
+  } catch (error) {
+    console.error(error.message);
+    alert("Fehler beim Bearbeiten des Kontos.");
+  }
+}
+
 export async function fetchAccounts() {
   const token = localStorage.getItem("authToken");
 
@@ -44,7 +88,6 @@ export function renderAccounts(accounts) {
   accounts.forEach((account) => {
     const row = document.createElement("tr");
 
-    // Dieser Teil ist von ChatGPT erstellt worden.
     const nameCell = document.createElement("td");
     nameCell.textContent = account.name || "Unbekannt";
 
@@ -58,7 +101,6 @@ export function renderAccounts(accounts) {
       typeof account.zinssatz === "number"
         ? `${account.zinssatz.toFixed(2)} %`
         : "0.00 %";
-    //
 
     const deleteCell = document.createElement("td");
     const deleteButton = document.createElement("button");
@@ -66,6 +108,12 @@ export function renderAccounts(accounts) {
     deleteButton.classList.add("delete-button");
     deleteButton.onclick = () => deleteAccount(account.id);
     deleteCell.appendChild(deleteButton);
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Bearbeiten";
+    editButton.classList.add("edit-button");
+    editButton.onclick = () => editAccount(account);
+    deleteCell.appendChild(editButton);
 
     row.appendChild(nameCell);
     row.appendChild(amountCell);
