@@ -5,8 +5,10 @@ using Microsoft.Extensions.Configuration;
 using SmartFlow_Backend.Controllers;
 using SmartFlow_Backend.Models;
 using SmartFlow_Backend.Repositories;
+using SmartFlow_Backend.Tests;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using System.Transactions;
 
 namespace SmartFlow_Backend.Tests.Controllers
 {
@@ -123,8 +125,8 @@ namespace SmartFlow_Backend.Tests.Controllers
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(1900, quellkonto.Geldbetrag); // Quellkonto wurde um 100 reduziert
-            Assert.AreEqual(600, zielkonto.Geldbetrag); // Zielkonto wurde um 100 erhöht
+            Assert.AreEqual(1900, quellkonto.Geldbetrag);  
+            Assert.AreEqual(600, zielkonto.Geldbetrag);  
         }
 
         [TestMethod]
@@ -160,6 +162,8 @@ namespace SmartFlow_Backend.Tests.Controllers
             mockDatabase.Verify(db => db.GetCollection<Transaktion>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>()), Times.Once);
             mockCollection.Verify(col => col.InsertOneAsync(It.IsAny<Transaktion>(), null, default), Times.Once); // Überprüft, ob InsertOneAsync aufgerufen wurde
         }
+
+        
 
 
     }
