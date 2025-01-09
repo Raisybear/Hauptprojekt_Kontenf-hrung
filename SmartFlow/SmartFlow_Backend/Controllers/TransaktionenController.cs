@@ -33,6 +33,11 @@ namespace SmartFlow_Backend.Controllers
                 return BadRequest("Der Betrag muss positiv sein.");
             }
 
+            if(transferRequest.QuellkontoId == transferRequest.ZielkontoId)
+            {
+                return BadRequest("Quellkonto und Zielkonto können nicht identisch sein.");
+            }
+
             try
             {
                 await _transaktionsRepository.TransferAsync(transferRequest);
