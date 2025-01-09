@@ -68,6 +68,7 @@ export async function fetchAccounts() {
   }
 }
 
+// diese Funktion ist mit ChatGPT erstellt worden.
 export function renderAccounts(accounts) {
   const accountList = document.getElementById("account-list");
 
@@ -123,6 +124,7 @@ export function renderAccounts(accounts) {
     accountList.appendChild(row);
   });
 }
+//
 
 async function deleteAccount(accountId) {
   const token = localStorage.getItem("authToken");
@@ -151,6 +153,7 @@ async function deleteAccount(accountId) {
   }
 }
 
+// diese Funktion ist mit ChatGPT erstellt worden.
 export function renderAccountDropdown(accounts) {
   const depositDropdown = document.getElementById("deposit-account");
   const withdrawDropdown = document.getElementById("withdraw-account");
@@ -189,6 +192,7 @@ export function renderAccountDropdown(accounts) {
     }
   });
 }
+//
 
 export async function handleCreateAccount(event) {
   event.preventDefault();

@@ -83,6 +83,7 @@ export async function withdrawMoney(event) {
   }
 }
 
+// diese Funktion ist mit ChatGPT erstellt worden.
 export async function fetchTransactions() {
   const token = localStorage.getItem("authToken");
 
@@ -160,6 +161,7 @@ export async function fetchTransactions() {
     alert("Fehler beim Laden der Transaktionen.");
   }
 }
+//
 
 export function renderTransactions(transactions) {
   const transactionListBody = document.getElementById("transaction-list-body");
@@ -257,6 +259,7 @@ export async function transferMoney(event) {
   }
 }
 
+// diese Funktion ist mit ChatGPT erstellt worden.
 export async function populateSourceAndDestinationAccounts() {
   const token = localStorage.getItem("authToken");
 
@@ -300,7 +303,9 @@ export async function populateSourceAndDestinationAccounts() {
     alert("Fehler beim Laden der Konten.");
   }
 }
+//
 
+// diese Funktion ist mit ChatGPT erstellt worden.
 function populateDropdown(dropdown, accounts) {
   dropdown.innerHTML = "<option value=''>Bitte Konto wählen</option>";
 
@@ -311,3 +316,4 @@ function populateDropdown(dropdown, accounts) {
     dropdown.appendChild(option);
   });
 }
+//
