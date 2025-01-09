@@ -44,6 +44,7 @@ export function renderAccounts(accounts) {
   accounts.forEach((account) => {
     const row = document.createElement("tr");
 
+    // Dieser Teil ist von ChatGPT erstellt worden.
     const nameCell = document.createElement("td");
     nameCell.textContent = account.name || "Unbekannt";
 
@@ -57,6 +58,7 @@ export function renderAccounts(accounts) {
       typeof account.zinssatz === "number"
         ? `${account.zinssatz.toFixed(2)} %`
         : "0.00 %";
+    //
 
     const deleteCell = document.createElement("td");
     const deleteButton = document.createElement("button");

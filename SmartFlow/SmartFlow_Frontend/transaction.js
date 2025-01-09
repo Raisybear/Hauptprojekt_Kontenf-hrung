@@ -122,7 +122,7 @@ export async function fetchTransactions() {
 
     const foreignAccounts = await responseForeignAccounts.json();
     foreignAccounts.forEach((account) => {
-      accountMap[account.id] = account.name; 
+      accountMap[account.id] = account.name;
     });
 
     const transactions = [];
@@ -148,7 +148,7 @@ export async function fetchTransactions() {
         transaction.zielkontoName =
           transaction.zielkontoId === "Bar"
             ? "Bar"
-            : accountMap[transaction.zielkontoId] || "Unbekannt"; 
+            : accountMap[transaction.zielkontoId] || "Unbekannt";
       });
 
       transactions.push(...accountTransactions);

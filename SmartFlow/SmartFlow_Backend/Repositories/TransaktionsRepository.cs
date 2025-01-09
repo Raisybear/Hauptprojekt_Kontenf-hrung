@@ -14,6 +14,7 @@ namespace SmartFlow_Backend.Repositories
             _kontoRepository = kontoRepository;
         }
 
+        // diese Funktion wurde mit ChatGPT erstellt
         public async Task<bool> TransferAsync(TransaktionenDto transferRequest)
         {
             // Quellkonto anhand der ID laden

@@ -1,7 +1,9 @@
+// diese Funktion ist mit ChatGPT erstellt worden.
 export function extractUserIdFromToken(token) {
   const payload = JSON.parse(atob(token.split(".")[1]));
   return payload.UserId || payload.userId || payload.id;
 }
+//
 
 export function showSection(sectionId) {
   document.querySelectorAll("main > section").forEach((section) => {
