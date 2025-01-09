@@ -29,7 +29,9 @@ nav button {
 }
 
 nav button:hover {
-  background-color: #003d80;
+  background-color: #ffffff;
+  color: #0056b3;
+  border-color: #0056b3;
 }
 
 main {
@@ -46,8 +48,8 @@ section.active {
 
 button {
   background-color: #007bff;
+  border: 1px solid;
   color: white;
-  border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 5px;
@@ -55,7 +57,9 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #ffffff;
+  color: #0056b3;
+  border-color: #0056b3;
 }
 
 button.delete-button {
@@ -150,5 +154,3 @@ button.edit-button:hover {
   color: #0056b3;
   border-color: #0056b3;
 }
-
-
