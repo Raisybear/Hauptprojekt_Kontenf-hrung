@@ -5,6 +5,10 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  padding: 2rem;
+}
+
 header {
   background-color: #007bff;
   color: white;
@@ -15,25 +19,57 @@ header {
 }
 
 header h1 {
-  margin: 0;
+  margin: 10px;
 }
 
+h2 {
+  margin: 0px;
+  padding: 0px;
+}
+
+button,
 nav button {
-  margin-left: 1rem;
-  background-color: #0056b3;
+  background-color: #007bff;
+  border: 1px solid #007bff;
   color: white;
-  border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 5px;
+  font-size: 14px;
+  margin: 0.5rem;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
 }
 
+button:hover,
 nav button:hover {
-  background-color: #003d80;
+  background-color: #ffffff;
+  color: #007bff;
+  border-color: #007bff;
 }
 
-main {
-  padding: 2rem;
+button.delete-button {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+button.delete-button:hover {
+  background-color: #ffffff;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+button.edit-button {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+button.edit-button:hover {
+  background-color: #ffffff;
+  color: #0056b3;
+  border-color: #0056b3;
 }
 
 section {
@@ -44,31 +80,35 @@ section.active {
   display: block;
 }
 
-button {
-  background-color: #007bff;
-  color: white;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+section#dashboard {
+  background-image: url("stylish-soft-blue-curve-lines-abstract-background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+section#dashboard h2 {
+  color: #007bff;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  background: none;
+  padding: 0;
   border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 1rem;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-button.delete-button {
-  background-color: #dc3545;
-  border: 1px solid #dc3545;
-  margin: 0px;
-}
-
-button.delete-button:hover {
-  background-color: #ffffff;
-  color: #dc3545;
-  border-color: #dc3545;
-  border: 1px solid #dc3545;
 }
 
 form label {
@@ -112,90 +152,3 @@ table th {
 table tr:hover {
   background-color: #f9f9f9;
 }
-
-button.edit-button {
-  background-color: #28a745;
-  margin: 0;
-  padding: 0.25rem 0.5rem;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 3px;
-}
-
-button.edit-button:hover {
-  background-color: #218838;
-}
-
-form select {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-button.edit-button {
-  background-color: #007bff;
-  border: 1px solid #007bff;
-  padding: 0.5rem 1rem;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-left: 5px;
-}
-
-button.edit-button:hover {
-  background-color: #ffffff;
-  color: #0056b3;
-  border-color: #0056b3;
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-section#dashboard {
-  background-image: url('stylish-soft-blue-curve-lines-abstract-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: calc(100vh - 60px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-section#dashboard h2 {
-  color:#007bff;
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  background: none;
-  padding: 0;
-  border: none;
-  margin-top: 2rem;
-}
-
-
-
-
