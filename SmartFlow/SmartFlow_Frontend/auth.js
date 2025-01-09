@@ -1,4 +1,5 @@
 import { showSection } from "./utils.js";
+import { fetchTransactions } from "./transaction.js";
 
 export async function loginUser(event) {
   event.preventDefault();
@@ -18,6 +19,7 @@ export async function loginUser(event) {
     document.getElementById("menu-bar").style.display = "flex";
     showSection("dashboard");
     fetchAccounts();
+    fetchTransactions();
   } catch (error) {
     alert(error.message);
   }

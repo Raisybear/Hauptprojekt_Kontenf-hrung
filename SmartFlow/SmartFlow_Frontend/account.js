@@ -1,4 +1,5 @@
 import { extractUserIdFromToken } from "./utils.js";
+import { populateSourceAndDestinationAccounts } from "./transaction.js";
 
 export async function fetchAccounts() {
   const token = localStorage.getItem("authToken");
@@ -126,7 +127,9 @@ export function renderAccountDropdown(accounts) {
   accounts.forEach((account) => {
     const option = document.createElement("option");
     option.value = account.id;
-    option.textContent = `${account.name} (${account.geldbetrag.toFixed(2)} CHF)`;
+    option.textContent = `${account.name} (${account.geldbetrag.toFixed(
+      2
+    )} CHF)`;
 
     depositDropdown.appendChild(option);
 
@@ -174,6 +177,7 @@ export async function handleCreateAccount(event) {
     alert("Konto erfolgreich erstellt.");
     document.getElementById("create-account-form").reset();
     fetchAccounts();
+    populateSourceAndDestinationAccounts();
   } catch (error) {
     alert(error.message);
   }
