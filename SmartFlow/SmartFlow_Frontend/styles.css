@@ -151,4 +151,51 @@ button.edit-button:hover {
   border-color: #0056b3;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+section#dashboard {
+  background-image: url('stylish-soft-blue-curve-lines-abstract-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+section#dashboard h2 {
+  color:#007bff;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  background: none;
+  padding: 0;
+  border: none;
+  margin-top: 2rem;
+}
+
+
+
 
